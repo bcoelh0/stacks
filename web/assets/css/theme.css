@@ -22825,3 +22825,16 @@ img {
 .subtitle {
   font-size: 3.5rem;
 }
+
+.section-main {
+  height: 1000px;
+
+}
+
+.main-top-padding {
+  padding-top: 200px !important;
+}
+
+.bottom-padding {
+    padding-bottom: 200px !important;
+}
