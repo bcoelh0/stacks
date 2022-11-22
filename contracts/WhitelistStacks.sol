@@ -18,13 +18,13 @@ contract WhitelistStacks is Ownable {
   struct Account {
     address accountAddress;
     address referredBy;
+    bool exists;
   }
 
-  mapping(address => bool) public registered;
+  mapping(address => Account) public whitelist;
   mapping(address => uint) public referralsLength;
   uint public whitelistLength;
   uint public maxListLength = 1000;
-  Account [] public whitelist;
 
   event WhitelistAdded(address indexed account);
   event ReferralFeesPaid(address indexed account);
@@ -36,7 +36,7 @@ contract WhitelistStacks is Ownable {
   // make payment and add sender address to whitelist with according plan
   function addToWhitelist(address _referredBy) public {
     require(whitelistLength < maxListLength, "Sorry, whitelist is full");
-    require(!registered[msg.sender], "Address already registered for whitelist");
+    require(!whitelist[msg.sender].exists, "Address already registered for whitelist");
     require(_referredBy != msg.sender, "You cannot refer yourself");
 
     // select currect plan
@@ -44,7 +44,7 @@ contract WhitelistStacks is Ownable {
 
     // filter out referral if not registered
     address referredBy;
-    if(registered[_referredBy]) {
+    if(whitelist[_referredBy].exists) {
       referredBy = _referredBy;
     }
     else {
@@ -52,9 +52,8 @@ contract WhitelistStacks is Ownable {
     }
 
     usdcAddress.transferFrom(msg.sender, address(this), plans[plan]);
-    whitelist.push(Account(msg.sender, referredBy));
+    whitelist[msg.sender] = Account(msg.sender, referredBy, true);
     whitelistLength++;
-    registered[msg.sender] = true;
     referralsLength[referredBy] = referralsLength[referredBy] + 1;
     emit WhitelistAdded(msg.sender);
   }
@@ -79,16 +78,6 @@ contract WhitelistStacks is Ownable {
     } else {
       return 3;
     }
-  }
-
-  function withdrawlsLeft() public view returns(uint) {
-    uint totalLeft = 0;
-    for(uint i=0; i < whitelist.length; i++){
-      if(referralsLength[whitelist[i].referredBy] > 0){
-        totalLeft++;
-      }
-    }
-    return totalLeft;
   }
 
   function amountToPayToReferrer(address _user) public view returns(uint) {
