@@ -106,9 +106,9 @@ Main = {
     $('#usdc-balance').html(Main.toEth(usdcBalance.toString()))
 
     let allowanceUsdc = await Main.usdc.allowance(Main.account, Main.whitelist.address)
-    let whitelisted = await Main.whitelist.registered(Main.account)
+    let whitelisted = await Main.whitelist.whitelist(Main.account)
 
-    if(whitelisted) {
+    if(whitelisted.exists) {
       $('#whitelisted').show()
     }
     else {

@@ -2,7 +2,7 @@ const WhitelistStacks = artifacts.require("WhitelistStacks");
 const FUSDC = artifacts.require("FUSDC");
 
 let toWei = (n) => {
-  return web3.utils.toWei(n, 'ether');
+  return n * 1e6;
 }
 
 contract("WhitelistStacks", async (accounts) => {
@@ -226,20 +226,108 @@ contract("WhitelistStacks", async (accounts) => {
     });
   });
 
-  // describe('#amountToPayToReferrer', async () => {
-  //   it("user has 10 referrals", async () => {
-  //   });
+  describe('#amountToPayToReferrer', async () => {
+    before(async () => {
+      await whitelistStacks.setOpenWithdrawals(false, { from: accounts[0] });
 
-  //   it("user has 5 referrals", async () => {
-  //   });
+      // add 10 users
+      // accounts[100] is the referrer
+      for(let i = 260; i < 270; i++) {
+        await fusdc.transfer(accounts[i], toWei('500'), { from: accounts[0] });
+        await fusdc.approve(whitelistStacks.address, toWei('10000'), { from: accounts[i] });
+        await whitelistStacks.addToWhitelist(accounts[100], { from: accounts[i] });
+      }
 
-  //   it("user has 3 referrals", async () => {
-  //   });
+      // add 5 users
+      // accounts[101] is the referrer
+      for(let i = 270; i < 275; i++) {
+        await fusdc.transfer(accounts[i], toWei('500'), { from: accounts[0] });
+        await fusdc.approve(whitelistStacks.address, toWei('10000'), { from: accounts[i] });
+        await whitelistStacks.addToWhitelist(accounts[101], { from: accounts[i] });
+      }
 
-  //   it("user has 1 referral", async () => {
-  //   });
+      // add 3 users
+      // accounts[102] is the referrer
+      for(let i = 275; i < 278; i++) {
+        await fusdc.transfer(accounts[i], toWei('500'), { from: accounts[0] });
+        await fusdc.approve(whitelistStacks.address, toWei('10000'), { from: accounts[i] });
+        await whitelistStacks.addToWhitelist(accounts[102], { from: accounts[i] });
+      }
 
-  //   it("user has 0 referrals", async () => {
-  //   });
-  // });
+      // add 1 user
+      // accounts[103] is the referrer
+      await fusdc.transfer(accounts[278], toWei('500'), { from: accounts[0] });
+      await fusdc.approve(whitelistStacks.address, toWei('10000'), { from: accounts[278] });
+      await whitelistStacks.addToWhitelist(accounts[103], { from: accounts[278] });
+    });
+
+    it("user has 10 referrals", async () => {
+      let amount = await whitelistStacks.amountToPayToReferrer(accounts[100]);
+      assert.equal(amount.toString(), toWei('500'), "User has 10 referrals and should receive 500 USDC");
+    });
+
+    it("user has 5 referrals", async () => {
+      let amount = await whitelistStacks.amountToPayToReferrer(accounts[101]);
+      assert.equal(amount.toString(), toWei('250'), "User has 5 referrals and should receive 250 USDC");
+    });
+
+    it("user has 3 referrals", async () => {
+      let amount = await whitelistStacks.amountToPayToReferrer(accounts[102]);
+      assert.equal(amount.toString(), toWei('150'), "User has 3 referrals and should receive 150 USDC");
+    });
+
+    it("user has 1 referral", async () => {
+      let amount = await whitelistStacks.amountToPayToReferrer(accounts[103]);
+      assert.equal(amount.toString(), toWei('50'), "User has 1 referral and should receive 50 USDC");
+    });
+
+    it("user has 0 referrals", async () => {
+      let amount = await whitelistStacks.amountToPayToReferrer(accounts[104]);
+      assert.equal(amount.toString(), toWei('0'), "User has 0 referrals and should receive 0 USDC");
+    });
+  });
+
+  // only owner tests
+  describe('#setOpenWithdrawals', async () => {
+    it("only owner can set open withdrawals", async () => {
+      let failed = false;
+      try {
+        await whitelistStacks.setOpenWithdrawals(true, { from: accounts[1] });
+      }
+      catch (e) {
+        assert.include(e.message, 'Ownable: caller is not the owner', "Execution should fail");
+        failed = true;
+      }
+      assert.equal(failed, true, "Execution should fail");
+    });
+
+    it("only owner can set closed withdrawals", async () => {
+      await whitelistStacks.setOpenWithdrawals(true, { from: accounts[0] });
+    });
+  });
+
+  describe('#withdrawFunds', async () => {
+    it("non-owner can't withdraw funds", async () => {
+      let failed = false;
+      try {
+        await whitelistStacks.withdrawFunds('0x0000000000000000000000000000000000000000', toWei('10'), { from: accounts[1] });
+      }
+      catch (e) {
+        assert.include(e.message, 'Ownable: caller is not the owner', "Execution should fail");
+        failed = true;
+      }
+      assert.equal(failed, true, "Execution should fail");
+    });
+
+    it("owner can withdraw funds", async () => {
+      let beforeBalance = await fusdc.balanceOf(accounts[0]);
+      let contractBalance = await fusdc.balanceOf(whitelistStacks.address);
+      await whitelistStacks.withdrawFunds(accounts[0], contractBalance.toString(), { from: accounts[0] });
+      let afterBalance = await fusdc.balanceOf(accounts[0]);
+
+      assert.equal((afterBalance - beforeBalance).toString(), contractBalance.toString(), "Owner has received contract USDC");
+    });
+  });
+
+
 });

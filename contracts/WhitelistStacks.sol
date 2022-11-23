@@ -8,11 +8,13 @@ contract WhitelistStacks is Ownable {
   ERC20 public usdcAddress;
   bool openWithdrawals;
 
+  uint public DECIMALS = 10**6;
+
   uint [] public plans = [
-    100 * 10 ** 18,
-    250 * 10 ** 18,
-    500 * 10 ** 18,
-    1000 * 10 ** 18
+    100 * DECIMALS,
+    250 * DECIMALS,
+    500 * DECIMALS,
+    1000 * DECIMALS
   ];
 
   struct Account {
@@ -81,7 +83,7 @@ contract WhitelistStacks is Ownable {
   }
 
   function amountToPayToReferrer(address _user) public view returns(uint) {
-    return referralsLength[_user] * 50 * 10 ** 18;
+    return referralsLength[_user] * 50 * DECIMALS;
   }
 
   // Admin functions
