@@ -20,10 +20,12 @@ contract WhitelistStacks is Ownable {
   struct Account {
     address accountAddress;
     address referredBy;
+    uint amountPaid;
     bool exists;
   }
 
   mapping(address => Account) public whitelist;
+  address [] public whitelistArr; // for key identification
   mapping(address => uint) public referralsLength;
   uint public whitelistLength;
   uint public maxListLength = 1000;
@@ -54,7 +56,13 @@ contract WhitelistStacks is Ownable {
     }
 
     usdcAddress.transferFrom(msg.sender, address(this), plans[plan]);
-    whitelist[msg.sender] = Account(msg.sender, referredBy, true);
+    whitelist[msg.sender] = Account({
+        accountAddress: msg.sender,
+        referredBy: referredBy,
+        amountPaid: plans[plan],
+        exists: true
+      });
+    whitelistArr.push(msg.sender);
     whitelistLength++;
     referralsLength[referredBy] = referralsLength[referredBy] + 1;
     emit WhitelistAdded(msg.sender);
