@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { PRIVATE_KEY } = process.env;
+const { PRIVATE_KEY, INFURA_ID } = process.env;
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 

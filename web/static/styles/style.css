@@ -1,0 +1,47 @@
+@import "./font.css";
+@import "./accordion.css";
+@import "./media.css";
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a {
+    font-family: "GAMERS", 'san-serif';
+    text-shadow: 3px 3px 0px #000;
+}
+
+a {
+    font-size: 22px;
+}
+
+.shadow-none {
+    text-shadow: unset !important;
+}
+
+#modal.active {
+    bottom: 0;
+}
+
+a:hover {
+    color: #00AC54;
+}
+
+a {
+    transition: all .3s;
+}
+
+a:hover img {
+    transform: scale(1.05);
+}
+
+a img {
+    transition: all .3s;
+}
+

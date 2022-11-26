@@ -11739,10 +11739,56 @@
   },
   "networks": {
     "5": {
-      "events": {},
+      "events": {
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0xd03a333578b3bec046a21391622c18e0b54a2006f8720f38a8dc70f8e28c0d0e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "ReferralFeesPaid",
+          "type": "event"
+        },
+        "0x4790a4adb426ca2345bb5108f6e454eae852a7bf687544cd66a7270dff3a41d6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "WhitelistAdded",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0x5F524765a7e28D0DCedEfa7aa10e971b1cF857aF",
-      "transactionHash": "0x84e80021dab542d8f0e88b92ae72a16024f67cc5ddd95dc66286a98e1fa971b3"
+      "address": "0x2FbAD1455DF2b5DA1AB654D344362E67a81cC8E7",
+      "transactionHash": "0xafda25f13169d4b1b816303b2dd268ee148503a0eaae17e5814491103d69d8ba"
     },
     "5777": {
       "events": {
@@ -11816,7 +11862,7 @@
     }
   },
   "schemaVersion": "3.4.10",
-  "updatedAt": "2022-11-23T20:16:18.692Z",
+  "updatedAt": "2022-11-23T21:03:25.420Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

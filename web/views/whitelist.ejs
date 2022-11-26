@@ -15,7 +15,7 @@ USDC balance: <span id="usdc-balance">wallet balance</span>
 
 <br><br>
 <div id="register-block" style="display: none">
-  <button id="pay-usdc">Register for a spot</button>
+  <button id="pay-usdc">Pay <span id="current-plan"></span> and register for a spot</button>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -25,4 +25,4 @@ USDC balance: <span id="usdc-balance">wallet balance</span>
   const referrerHash = '<%= hash %>';
   console.log(referrerHash)
 </script>
-<script src="static/main.js"></script>
+<script src="static/scripts/contracts-io/main.js"></script>

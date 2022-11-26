@@ -9,7 +9,6 @@ app.set('views', path.join(__dirname, 'views'))
 app.use('/static', express.static(path.join(__dirname, 'static')))
 app.use('/contracts', express.static(path.join(__dirname, '../build/contracts')))
 app.use('/scripts', express.static(path.join(__dirname, '../node_modules')))
-app.use('/assets', express.static(path.join(__dirname, 'assets')))
 
 app.use(cookieSession({
   name: 'session',
@@ -18,18 +17,25 @@ app.use(cookieSession({
 }))
 
 app.get(['/', '/r/:hash'], (req, res) => {
-  req.session.referral = req.session.referral || req.params.hash
-  res.render('index', { hash: req.session.referral })
+  res.redirect('/soon')
+
+  // req.session.referral = req.session.referral || req.params.hash
+  // res.render('index', { hash: req.session.referral })
 })
 
-app.get(['/wl-soon'], (req, res) => {
-  res.render('wl-lp')
+
+app.get(['/soon'], (req, res) => {
+  res.render('soon')
 })
 
-app.get(['/wl', '/wl/:hash'], (req, res) => {
-  req.session.referral = req.session.referral || req.params.hash
-  res.render('whitelist', { hash: req.session.referral })
-})
+// app.get(['/wl-soon'], (req, res) => {
+//   res.render('wl-lp')
+// })
+
+// app.get(['/wl', '/wl/:hash'], (req, res) => {
+//   req.session.referral = req.session.referral || req.params.hash
+//   res.render('whitelist', { hash: req.session.referral })
+// })
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
