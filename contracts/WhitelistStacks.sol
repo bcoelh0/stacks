@@ -43,9 +43,6 @@ contract WhitelistStacks is Ownable {
     require(!whitelist[msg.sender].exists, "Address already registered for whitelist");
     require(_referredBy != msg.sender, "You cannot refer yourself");
 
-    // select currect plan
-    uint plan = currentPlan();
-
     // filter out referral if not registered
     address referredBy;
     if(whitelist[_referredBy].exists) {
@@ -55,17 +52,9 @@ contract WhitelistStacks is Ownable {
       referredBy = address(0);
     }
 
+    uint plan = currentPlan();
     usdcAddress.transferFrom(msg.sender, address(this), plans[plan]);
-    whitelist[msg.sender] = Account({
-        accountAddress: msg.sender,
-        referredBy: referredBy,
-        amountPaid: plans[plan],
-        exists: true
-      });
-    whitelistArr.push(msg.sender);
-    whitelistLength++;
-    referralsLength[referredBy] = referralsLength[referredBy] + 1;
-    emit WhitelistAdded(msg.sender);
+    addUserToList(msg.sender, referredBy, plans[plan]);
   }
 
   function receiveReferral() public {
@@ -105,6 +94,24 @@ contract WhitelistStacks is Ownable {
 
   function setMaxListLength(uint _maxListLength) public onlyOwner {
     maxListLength = _maxListLength;
+  }
+
+  function addToWhitelistAdmin(address _user) public onlyOwner {
+    require(!whitelist[_user].exists, "Address already registered for whitelist");
+    addUserToList(_user, address(0), 0);
+  }
+
+  function addUserToList(address _user, address _referredBy, uint _amountPaid) private {
+    whitelist[_user] = Account({
+      accountAddress: _user,
+      referredBy: _referredBy,
+      amountPaid: _amountPaid,
+      exists: true
+    });
+    whitelistArr.push(_user);
+    whitelistLength++;
+    referralsLength[_referredBy] = referralsLength[_referredBy] + 1;
+    emit WhitelistAdded(_user);
   }
 }
 
