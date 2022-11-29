@@ -17,19 +17,8 @@ app.use(cookieSession({
 }))
 
 app.get(['/', '/r/:hash'], (req, res) => {
-  res.redirect('/soon')
-
-  // req.session.referral = req.session.referral || req.params.hash
-  // res.render('index', { hash: req.session.referral })
-})
-
-app.get(['/preview'], (req, res) => {
   req.session.referral = req.session.referral || req.params.hash
   res.render('index', { hash: req.session.referral })
-})
-
-app.get(['/soon'], (req, res) => {
-  res.render('soon')
 })
 
 // app.get(['/wl', '/wl/:hash'], (req, res) => {
