@@ -11,6 +11,7 @@ contract("WhitelistStacks", async (accounts) => {
   before(async () => {
     fusdc = await FUSDC.new();
     whitelistStacks = await WhitelistStacks.new(fusdc.address);
+    await whitelistStacks.setContractActive(true);
 
     for(let i = 0; i < 4; i++) {
       await fusdc.transfer(accounts[i], toWei('1000'), { from: accounts[0] });

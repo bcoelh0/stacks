@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract WhitelistStacks is Ownable {
   ERC20 public usdcAddress;
   bool openWithdrawals;
+  bool contractActive;
 
   uint public DECIMALS = 10**6;
 
@@ -39,6 +40,7 @@ contract WhitelistStacks is Ownable {
 
   // make payment and add sender address to whitelist with according plan
   function addToWhitelist(address _referredBy) public {
+    require(contractActive, "Contract is not active");
     require(whitelistLength < maxListLength, "Sorry, whitelist is full");
     require(!whitelist[msg.sender].exists, "Address already registered for whitelist");
     require(_referredBy != msg.sender, "You cannot refer yourself");
@@ -94,6 +96,10 @@ contract WhitelistStacks is Ownable {
 
   function setMaxListLength(uint _maxListLength) public onlyOwner {
     maxListLength = _maxListLength;
+  }
+
+  function setContractActive(bool _value) public onlyOwner {
+    contractActive = _value;
   }
 
   function addToWhitelistAdmin(address _user) public onlyOwner {
