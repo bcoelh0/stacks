@@ -13,7 +13,7 @@ app.use('/scripts', express.static(path.join(__dirname, '../node_modules')))
 app.use(cookieSession({
   name: 'session',
   keys: ['k1'],
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  maxAge: 600 * 24 * 60 * 60 * 1000 // 600 days
 }))
 
 app.get(['/', '/r/:hash'], (req, res) => {
@@ -24,6 +24,11 @@ app.get(['/', '/r/:hash'], (req, res) => {
 // app.get(['/wl', '/wl/:hash'], (req, res) => {
 //   req.session.referral = req.session.referral || req.params.hash
 //   res.render('whitelist', { hash: req.session.referral })
+// })
+
+// app.get(['/wl-prev'], (req, res) => {
+//   req.session.referral = req.session.referral || req.params.hash
+//   res.render('whitelist-prev', { hash: req.session.referral })
 // })
 
 app.listen(port, () => {

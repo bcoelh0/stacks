@@ -168,7 +168,11 @@ Main = {
       else {
         referrer = '0x0000000000000000000000000000000000000000'
       }
+
+
       Main.buttonLoadingHelper(e, 'reserving...', async () => {
+        console.log(Main.whitelist.address)
+        alert('other')
         await Main.whitelist.addToWhitelist(referrer, { from: Main.account }).once("transactionHash", async (txHash) => {
           Main.handleTransaction(txHash, 'Reserving your spot...')
         })
@@ -177,13 +181,16 @@ Main = {
   },
   // helper functions
   buttonLoadingHelper: async (event, loadingText, callback) => {
+
     $btn = $(event.target)
     $btn.attr('disabled', 'disabled')
     $btn.html(loadingText)
     try {
+      alert('here')
       await callback()
-      window.location.reload()
+      // window.location.reload()
     } catch {
+      alert('error')
       window.location.reload()
     }
   },

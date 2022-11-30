@@ -231,59 +231,65 @@ contract("WhitelistStacks", async (accounts) => {
     before(async () => {
       await whitelistStacks.setOpenWithdrawals(false, { from: accounts[0] });
 
-      // add 10 users
-      // accounts[100] is the referrer
-      for(let i = 260; i < 270; i++) {
+      for(let i = 300; i < 304; i++) {
         await fusdc.transfer(accounts[i], toWei('500'), { from: accounts[0] });
         await fusdc.approve(whitelistStacks.address, toWei('10000'), { from: accounts[i] });
-        await whitelistStacks.addToWhitelist(accounts[100], { from: accounts[i] });
+        await whitelistStacks.addToWhitelist('0x0000000000000000000000000000000000000000', { from: accounts[i] });
+      }
+
+      // add 10 users
+      // accounts[300] is the referrer
+      for(let i = 310; i < 320; i++) {
+        await fusdc.transfer(accounts[i], toWei('500'), { from: accounts[0] });
+        await fusdc.approve(whitelistStacks.address, toWei('10000'), { from: accounts[i] });
+        await whitelistStacks.addToWhitelist(accounts[300], { from: accounts[i] });
       }
 
       // add 5 users
-      // accounts[101] is the referrer
-      for(let i = 270; i < 275; i++) {
+      // accounts[301] is the referrer
+      for(let i = 320; i < 325; i++) {
         await fusdc.transfer(accounts[i], toWei('500'), { from: accounts[0] });
         await fusdc.approve(whitelistStacks.address, toWei('10000'), { from: accounts[i] });
-        await whitelistStacks.addToWhitelist(accounts[101], { from: accounts[i] });
+        await whitelistStacks.addToWhitelist(accounts[301], { from: accounts[i] });
       }
 
       // add 3 users
-      // accounts[102] is the referrer
-      for(let i = 275; i < 278; i++) {
+      // accounts[302] is the referrer
+      for(let i = 325; i < 328; i++) {
         await fusdc.transfer(accounts[i], toWei('500'), { from: accounts[0] });
         await fusdc.approve(whitelistStacks.address, toWei('10000'), { from: accounts[i] });
-        await whitelistStacks.addToWhitelist(accounts[102], { from: accounts[i] });
+        await whitelistStacks.addToWhitelist(accounts[302], { from: accounts[i] });
       }
 
       // add 1 user
-      // accounts[103] is the referrer
-      await fusdc.transfer(accounts[278], toWei('500'), { from: accounts[0] });
-      await fusdc.approve(whitelistStacks.address, toWei('10000'), { from: accounts[278] });
-      await whitelistStacks.addToWhitelist(accounts[103], { from: accounts[278] });
+      // accounts[303] is the referrer
+      await fusdc.transfer(accounts[328], toWei('500'), { from: accounts[0] });
+      await fusdc.approve(whitelistStacks.address, toWei('10000'), { from: accounts[328] });
+      await whitelistStacks.addToWhitelist(accounts[303], { from: accounts[328] });
     });
 
     it("user has 10 referrals", async () => {
-      let amount = await whitelistStacks.amountToPayToReferrer(accounts[100]);
+      let amount = await whitelistStacks.amountToPayToReferrer(accounts[300]);
       assert.equal(amount.toString(), toWei('500'), "User has 10 referrals and should receive 500 USDC");
     });
 
     it("user has 5 referrals", async () => {
-      let amount = await whitelistStacks.amountToPayToReferrer(accounts[101]);
+      let amount = await whitelistStacks.amountToPayToReferrer(accounts[301]);
       assert.equal(amount.toString(), toWei('250'), "User has 5 referrals and should receive 250 USDC");
     });
 
     it("user has 3 referrals", async () => {
-      let amount = await whitelistStacks.amountToPayToReferrer(accounts[102]);
+      let amount = await whitelistStacks.amountToPayToReferrer(accounts[302]);
       assert.equal(amount.toString(), toWei('150'), "User has 3 referrals and should receive 150 USDC");
     });
 
     it("user has 1 referral", async () => {
-      let amount = await whitelistStacks.amountToPayToReferrer(accounts[103]);
+      let amount = await whitelistStacks.amountToPayToReferrer(accounts[303]);
       assert.equal(amount.toString(), toWei('50'), "User has 1 referral and should receive 50 USDC");
     });
 
     it("user has 0 referrals", async () => {
-      let amount = await whitelistStacks.amountToPayToReferrer(accounts[104]);
+      let amount = await whitelistStacks.amountToPayToReferrer(accounts[304]);
       assert.equal(amount.toString(), toWei('0'), "User has 0 referrals and should receive 0 USDC");
     });
   });
@@ -329,6 +335,4 @@ contract("WhitelistStacks", async (accounts) => {
       assert.equal((afterBalance - beforeBalance).toString(), contractBalance.toString(), "Owner has received contract USDC");
     });
   });
-
-
 });

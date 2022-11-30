@@ -56,7 +56,7 @@ contract WhitelistStacks is Ownable {
 
     uint plan = currentPlan();
     usdcAddress.transferFrom(msg.sender, address(this), plans[plan]);
-    addUserToList(msg.sender, referredBy, plans[plan]);
+    addUserToList(msg.sender, referredBy, plans[plan], true);
   }
 
   function receiveReferral() public {
@@ -104,10 +104,16 @@ contract WhitelistStacks is Ownable {
 
   function addToWhitelistAdmin(address _user) public onlyOwner {
     require(!whitelist[_user].exists, "Address already registered for whitelist");
-    addUserToList(_user, address(0), 0);
+    addUserToList(_user, address(0), 0, false);
   }
 
-  function addUserToList(address _user, address _referredBy, uint _amountPaid) private {
+  function removeUserFromWhitelist(address _user, bool decrementLength) public onlyOwner {
+    require(whitelist[_user].exists, "Address not registered for whitelist");
+    whitelist[_user].exists = false;
+    if(decrementLength) { whitelistLength--; }
+  }
+
+  function addUserToList(address _user, address _referredBy, uint _amountPaid, bool increment) private {
     whitelist[_user] = Account({
       accountAddress: _user,
       referredBy: _referredBy,
@@ -115,7 +121,7 @@ contract WhitelistStacks is Ownable {
       exists: true
     });
     whitelistArr.push(_user);
-    whitelistLength++;
+    if(increment) { whitelistLength++; }
     referralsLength[_referredBy] = referralsLength[_referredBy] + 1;
     emit WhitelistAdded(_user);
   }
