@@ -26,11 +26,6 @@ app.get(['/', '/r/:hash'], (req, res) => {
 //   res.render('whitelist', { hash: req.session.referral })
 // })
 
-// app.get(['/wl-prev'], (req, res) => {
-//   req.session.referral = req.session.referral || req.params.hash
-//   res.render('whitelist-prev', { hash: req.session.referral })
-// })
-
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

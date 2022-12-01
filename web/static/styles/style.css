@@ -45,3 +45,7 @@ a img {
     transition: all .3s;
 }
 
+.text-strike {
+    text-decoration: line-through;
+}
+

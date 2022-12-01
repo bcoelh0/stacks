@@ -1,12 +1,12 @@
 Main = {
   loading: false,
   contracts: {},
+  plansPrice: [100, 250, 500, 1000],
+  connected: false,
   toEth: (n) => {
-    // return web3.utils.fromWei(n, 'ether')
     return n / 1e6
   },
   toWei: (n) => {
-    // return web3.utils.toWei(n, 'ether')
     return n * 1e6
   },
   toCurrency: (n) => {
@@ -62,10 +62,12 @@ Main = {
     try {
       Main.whitelist = await Main.contracts.WhitelistStacks.deployed()
       Main.usdc = await Main.contracts.Usdc.deployed()
+      Main.connected = true
     }
     catch {
       console.log('error loading contracts')
-      alert('Please change network to Ethereum network')
+      Main.connected = false
+      alert('Please change network to Ethereum Mainnet')
     }
   },
   // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
@@ -101,46 +103,76 @@ Main = {
     if(accounts.length > 0) {
       Main.account = accounts[0]
       let acc = accounts[0]
-      $walletBtn.html(acc.slice(0, 5) + '...' + acc.slice(acc.length - 4, acc.length))
+      $walletBtn.hide()
 
       await Main.loadContract()
       await Main.fetchAccountData()
     }
+    else {
+      $walletBtn.show()
+    }
   },
   fetchAccountData: async () => {
+    if(Main.connected) {
+      $('#main-content').show()
+    }
+    else {
+      $('#wrong-network').show()
+    }
     let usdcBalance = await Main.usdc.balanceOf(Main.account)
     $('#usdc-balance').html(
       Main.toCurrency(Main.toEth(usdcBalance.toString()))
     )
 
     let allowanceUsdc = await Main.usdc.allowance(Main.account, Main.whitelist.address)
-    let whitelisted = await Main.whitelist.whitelist(Main.account)
+    let account = await Main.whitelist.whitelist(Main.account)
 
+    // this needs to load without metamask connected
     let currentPlan = await Main.whitelist.currentPlan({ from: Main.account })
     switch(currentPlan.toString()) {
       case '0':
-        $('#current-plan').html('100 USDC')
+        $($('.levels')[0]).find('img').show()
+        $($('.levels')[0]).find('span').addClass('font-semibold')
         break
       case '1':
-        $('#current-plan').html('250 USDC')
+        $($('.levels')[0]).find('span').addClass('text-strike')
+        $($('.levels')[1]).find('span').addClass('font-semibold')
+        $($('.levels')[1]).find('img').show()
         break
       case '2':
-        $('#current-plan').html('500 USDC')
+        $($('.levels')[0]).find('span').addClass('text-strike')
+        $($('.levels')[1]).find('span').addClass('text-strike')
+        $($('.levels')[2]).find('span').addClass('font-semibold')
+        $($('.levels')[2]).find('img').show()
         break
       case '3':
-        $('#current-plan').html('1,000 USDC')
+        $($('.levels')[0]).find('span').addClass('text-strike')
+        $($('.levels')[1]).find('span').addClass('text-strike')
+        $($('.levels')[2]).find('span').addClass('text-strike')
+        $($('.levels')[3]).find('span').addClass('font-semibold')
+        $($('.levels')[3]).find('img').show()
         break
     }
 
-    if(whitelisted.exists) {
-      $('#whitelisted').show()
-      let account = await Main.whitelist.whitelist(Main.account)
-      console.log('referral address: ' + account.referredBy.toString())
-      console.log('referral link: https://link.com/r/' + Main.account)
+    if(account.exists) { // already registered
+      $('#registered').show()
+      $('#referral-post-wl').show()
+      $('#referral-link').html(Main.account)
+      let numReferrals = await Main.whitelist.referralsLength(Main.account)
+      $('#referral-count').html(numReferrals.toString())
+      $('#referral-funds').html(parseInt(numReferrals) * 50)
+      $('#referral-referred-by').html(account.referredBy.toString())
     }
-    else {
+    else { // not registered
+      let currentSpotNumber = await Main.whitelist.whitelistLength()
+      let price = Main.plansPrice[currentPlan]
+      $('#register-box').find('#wl-number').html(currentSpotNumber.toString())
+      $('#register-box').find('#plan-price').html(price.toString())
+      $('#register-box').show()
+      $('#referral-pre-wl').show()
+
       if(allowanceUsdc > 0) {
-        $('#register-block').show()
+        $('#pay-usdc').show()
       }
       else {
         $('#approve-usdc').show()
@@ -161,7 +193,7 @@ Main = {
     })
 
     $('#pay-usdc').on('click', async (e) => {
-      console.log(referrerHash)
+      let referrer
       if(referrerHash) {
         referrer = referrerHash
       }
@@ -169,10 +201,8 @@ Main = {
         referrer = '0x0000000000000000000000000000000000000000'
       }
 
-
+      console.log(referrer)
       Main.buttonLoadingHelper(e, 'reserving...', async () => {
-        console.log(Main.whitelist.address)
-        alert('other')
         await Main.whitelist.addToWhitelist(referrer, { from: Main.account }).once("transactionHash", async (txHash) => {
           Main.handleTransaction(txHash, 'Reserving your spot...')
         })
@@ -181,16 +211,14 @@ Main = {
   },
   // helper functions
   buttonLoadingHelper: async (event, loadingText, callback) => {
-
     $btn = $(event.target)
     $btn.attr('disabled', 'disabled')
     $btn.html(loadingText)
     try {
-      alert('here')
       await callback()
-      // window.location.reload()
-    } catch {
-      alert('error')
+      window.location.reload()
+    } catch(e) {
+      alert('Something went wrong. Please make sure you have enough funds.')
       window.location.reload()
     }
   },

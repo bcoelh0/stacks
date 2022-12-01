@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract WhitelistStacks is Ownable {
   ERC20 public usdcAddress;
-  bool openWithdrawals;
-  bool contractActive;
+  bool public openWithdrawals;
+  bool public contractActive;
 
   uint public DECIMALS = 10**6;
 
