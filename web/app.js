@@ -26,6 +26,12 @@ app.get(['/', '/r/:hash'], (req, res) => {
 //   res.render('whitelist', { hash: req.session.referral })
 // })
 
+// app.get(['/clear'], (req, res) => {
+//   req.session.referral = undefined
+//   res.redirect('/wl')
+// })
+
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

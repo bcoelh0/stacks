@@ -28,6 +28,7 @@ contract WhitelistStacks is Ownable {
   mapping(address => Account) public whitelist;
   address [] public whitelistArr; // for key identification
   mapping(address => uint) public referralsLength;
+  uint public totalReferralCount;
   uint public whitelistLength;
   uint public maxListLength = 1000;
 
@@ -49,6 +50,7 @@ contract WhitelistStacks is Ownable {
     address referredBy;
     if(whitelist[_referredBy].exists) {
       referredBy = _referredBy;
+      totalReferralCount++;
     }
     else {
       referredBy = address(0);
@@ -65,6 +67,7 @@ contract WhitelistStacks is Ownable {
 
     uint amount = amountToPayToReferrer(msg.sender);
     referralsLength[msg.sender] = 0;
+    totalReferralCount -= referralsLength[msg.sender];
     usdcAddress.transfer(msg.sender, amount);
     emit ReferralFeesPaid(msg.sender);
   }
@@ -113,6 +116,10 @@ contract WhitelistStacks is Ownable {
     if(decrementLength) { whitelistLength--; }
   }
 
+  function totalLeftToPayReferrals() public view returns(uint) {
+    return totalReferralCount * 50 * DECIMALS;
+  }
+
   function addUserToList(address _user, address _referredBy, uint _amountPaid, bool increment) private {
     whitelist[_user] = Account({
       accountAddress: _user,
@@ -122,7 +129,7 @@ contract WhitelistStacks is Ownable {
     });
     whitelistArr.push(_user);
     if(increment) { whitelistLength++; }
-    referralsLength[_referredBy] = referralsLength[_referredBy] + 1;
+    referralsLength[_referredBy]++;
     emit WhitelistAdded(_user);
   }
 }

@@ -181,6 +181,7 @@ Main = {
 
     let contractBalance = await Main.usdc.balanceOf(Main.whitelist.address)
     console.log('contractBalance: ' + contractBalance.toString())
+    console.log('referral address: ' + referrerHash)
   },
   setupClickBuySpot: async () => {
     $('#approve-usdc').on('click', async (e) => {
@@ -200,8 +201,6 @@ Main = {
       else {
         referrer = '0x0000000000000000000000000000000000000000'
       }
-
-      console.log(referrer)
       Main.buttonLoadingHelper(e, 'reserving...', async () => {
         await Main.whitelist.addToWhitelist(referrer, { from: Main.account }).once("transactionHash", async (txHash) => {
           Main.handleTransaction(txHash, 'Reserving your spot...')
@@ -224,12 +223,6 @@ Main = {
   },
   handleTransaction: async (txHash, message) => {
     alert(message)
-
-    // $('#create-node').modal('hide')
-    // $modal = $('#tx-alert')
-    // $modal.find('#tx-link').attr('href', 'https://polygonscan.com/tx/' + txHash)
-    // $modal.find('#tx-message').html(message)
-    // $modal.modal('show')
   }
 }
 
