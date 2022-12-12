@@ -55,13 +55,15 @@ Main = {
     Main.contracts.WhitelistStacks = await TruffleContract(wl)
     Main.contracts.WhitelistStacks.setProvider(Main.web3Provider)
 
-    const usdc = await $.getJSON('contracts/Fusdc.json')
+    // const usdc = await $.getJSON('contracts/Fusdc.json') // testnet
+    const usdc = await $.getJSON('contracts/usdc.json') // mainnet
     Main.contracts.Usdc = TruffleContract(usdc)
     Main.contracts.Usdc.setProvider(Main.web3Provider)
 
     try {
       Main.whitelist = await Main.contracts.WhitelistStacks.deployed()
-      Main.usdc = await Main.contracts.Usdc.deployed()
+      // Main.usdc = await Main.contracts.Usdc.deployed() // testnet
+      Main.usdc = await Main.contracts.Usdc.at('0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48') // mainnet
       Main.connected = true
     }
     catch {
