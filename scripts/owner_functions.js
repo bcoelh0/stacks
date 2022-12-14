@@ -20,7 +20,7 @@ Main = {
   setup: async () => {
     provider = new HDWalletProvider(
       process.env.PRIVATE_KEY,
-      `https://goerli.infura.io/v3/${process.env.INFURA_ID}`
+      `https://${network}.infura.io/v3/${process.env.INFURA_ID}`
     )
     WlArtifact = require('../build/contracts/WhitelistStacks.json')
     Whitelist = TruffleContract(WlArtifact)
@@ -86,35 +86,29 @@ Main = {
   }
 }
 
-// // toggleContractAccess
-// let access = process.argv[2].toString()
-// access = (access == 'true') ? true : false
-// Main.toggleContractAccess(access)
+const network = 'goerli' // 'mainnet'
 
-// setOpenWithdrawals
-// let open = process.argv[2].toString()
-// open = (open == 'true') ? true : false
-// Main.setOpenWithdrawals(open)
-
-// // addToWhitelistAdmin
-// let address = process.argv[2].toString()
-// Main.addToWhitelistAdmin(address)
-
-// // withdrawFunds
-// let to = process.argv[2].toString()
-// let amount = process.argv[3].toString()
-// amount = Main.usdcToWei(amount)
-// Main.withdrawFunds(to, amount)
-
-// // removeUserFromWhitelist
-// let addressToRemove = process.argv[2].toString()
-// let decrementCount
-// if(process.argv[3] == undefined) {
-//   decrementCount = false
-// }
-// else{
-//   decrementCount = (process.argv[3].toString() == 'true') ? true : false
-// }
-// // decrementCount should be false if user to be removed was added by admin!
-// // default is false as we should not decrement count if user was added regularly!
-// Main.removeUserFromWhitelist(addressToRemove, decrementCount)
+if(process.argv[2] == 'start-contract') {
+  let access = (process.argv[3].toString() == 'true') ? true : false
+  Main.toggleContractAccess(access)
+}
+else if(process.argv[2] == 'start-withdrawals') {
+  let open = (process.argv[3].toString() == 'true') ? true : false
+  Main.setOpenWithdrawals(open)
+}
+else if(process.argv[2] == 'add-wl') {
+  let address = process.argv[3].toString()
+  Main.addToWhitelistAdmin(address)
+}
+else if(process.argv[2] == 'withdraw-funds') {
+  let to = process.argv[3].toString()
+  amount = Main.usdcToWei(process.argv[4].toString())
+  Main.withdrawFunds(to, amount)
+}
+else if(process.argv[2] == 'rm-wl') {
+  let addressToRemove = process.argv[3].toString()
+  Main.removeUserFromWhitelist(addressToRemove, process.argv[4] == 'true')
+}
+else {
+  console.log('invalid command')
+}
