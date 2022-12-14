@@ -21,6 +21,11 @@ app.get(['/', '/r/:hash'], (req, res) => {
   res.render('index', { hash: req.session.referral })
 })
 
+app.get(['/wl-frog'], (req, res) => {
+  req.session.referral = req.session.referral || req.params.hash
+  res.render('whitelist', { hash: req.session.referral })
+})
+
 // app.get(['/wl', '/wl/:hash'], (req, res) => {
 //   req.session.referral = req.session.referral || req.params.hash
 //   res.render('whitelist', { hash: req.session.referral })
