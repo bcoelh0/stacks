@@ -5,12 +5,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract Stacks is ERC721, Ownable {
-  // mapping(address => tokenMetaData[]) public ownershipRecord;
-  // winner of auction is added here so they can mint
-  // Key is tokenId
-  // mapping(uint => address) public availableForMint;
-  // mapping(uint => tokenMetaData) public nonMintedTokens;
-
   mapping(uint => address) public tokenOwnershipRecord;
   mapping(uint => tokenMetaData) public tokenMetaDataRecord;
 
