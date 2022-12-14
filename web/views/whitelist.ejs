@@ -112,6 +112,12 @@
             <img src="static/images/wallet.svg" class="mx-auto mt-3 max-w-full" alt="Connect wallet"/>
           </a>
 
+          <div id="loading">
+            <p class="text-lg text-[#494E5B]">
+              ... loading ...
+            </p>
+          </div>
+
           <div id="wrong-network" style="display: none;">
             <p class="text-lg text-[#494E5B]">
               ... but you need to be on Ethereum mainnet.
@@ -322,6 +328,10 @@
       console.log(referrerHash)
     </script>
     <script src="static/script/main.js"></script>
+
+    <script>
+      $('#loading').hide()
+    </script>
 
   </body>
 </html>
