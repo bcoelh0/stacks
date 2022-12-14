@@ -1,4 +1,5 @@
 const express = require('express')
+var compression = require('compression')
 var path = require('path')
 const app = express()
 const cookieSession = require('cookie-session')
@@ -9,6 +10,9 @@ app.set('views', path.join(__dirname, 'views'))
 app.use('/static', express.static(path.join(__dirname, 'static')))
 app.use('/contracts', express.static(path.join(__dirname, '../build/contracts')))
 app.use('/scripts', express.static(path.join(__dirname, '../node_modules')))
+
+// compress all responses
+app.use(compression())
 
 app.use(cookieSession({
   name: 'session',
