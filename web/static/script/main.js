@@ -2,7 +2,6 @@ Main = {
   loading: false,
   contracts: {},
   plansPrice: [100, 250, 500, 1000],
-  connected: false,
   toEth: (n) => {
     return n / 1e6
   },
@@ -14,10 +13,10 @@ Main = {
     return val.substring(1, val.length)
   },
   load: async () => {
+    $walletBtn = $('#wallet')
     Main.toggleLoadingScreen(true)
     await Main.loadWeb3(true)
 
-    $walletBtn = $('#wallet')
     $walletBtn.on('click', async () => {
       await Main.loadWeb3(false)
     })
@@ -40,87 +39,82 @@ Main = {
   setupMetamaskEvents: async () => {
     if(typeof(ethereum) === 'undefined') { return }
 
-    ethereum.on('accountsChanged', async () => {
-      Main.toggleLoadingScreen(true)
+    ethereum.on('accountsChanged', () => {
       window.location.reload()
     });
 
-    ethereum.on('chainChanged', async () => {
-      Main.toggleLoadingScreen(true)
+    ethereum.on('chainChanged', () => {
       window.location.reload()
     });
   },
   loadContract: async () => {
-    const wl = await $.getJSON('contracts/WhitelistStacks.json')
-    Main.contracts.WhitelistStacks = await TruffleContract(wl)
-    Main.contracts.WhitelistStacks.setProvider(Main.web3Provider)
+    const usdcArtifact = await $.getJSON('contracts/usdc.json')
+    const wlArtifact = await $.getJSON('contracts/whitelist-stacks.json')
+    const { chainId } = await Main.provider.getNetwork()
 
-    // const usdc = await $.getJSON('contracts/Fusdc.json') // testnet
-    const usdc = await $.getJSON('contracts/usdc.json') // mainnet
-    Main.contracts.Usdc = TruffleContract(usdc)
-    Main.contracts.Usdc.setProvider(Main.web3Provider)
+    let usdcAddress, wlAddress
+    if(chainId == 1) {
+      // mainnet
+      usdcAddress = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+      wlAddress = '0x8cb951535452bc15763e59b9e5ef7048c8a49e20'
+    }
+    else if(chainId == 5) {
+      // goerli
+      usdcAddress = '0xe56B86e8f3DADAE9c48a0491E53dE75B4918BF93'
+      wlAddress = '0x13183CAD4552725ab8Cc49df2a9D77e81Cc0750D'
+    }
+    else {
+      // unsupported network
+      alert('Unsupported network. Please change network to Ethereum Mainnet')
+      $('.loading').hide()
+      $('#wrong-network').show()
+
+      return false
+    }
 
     try {
-      Main.whitelist = await Main.contracts.WhitelistStacks.deployed()
-      // Main.usdc = await Main.contracts.Usdc.deployed() // testnet
-      Main.usdc = await Main.contracts.Usdc.at('0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48') // mainnet
-      Main.connected = true
+      // Init contracts
+      Main.usdc = new ethers.Contract(usdcAddress, usdcArtifact["abi"], Main.signer)
+      Main.whitelist = new ethers.Contract(wlAddress, wlArtifact["abi"], Main.signer)
     }
     catch {
       console.log('error loading contracts')
-      Main.connected = false
-      alert('Please change network to Ethereum Mainnet')
     }
+    return true
   },
-  // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
-  loadWeb3: async (firstLoad) => {
-    if (window.ethereum) {
-      window.web3 = new Web3(ethereum);
-      try {
-        // Request account access if needed
-        await ethereum.enable();
-        Main.web3Provider = web3.currentProvider
-      } catch (error) {
-        // User denied account access...
-      }
-    }
-    // Legacy dapp browsers...
-    else if (window.web3) {
-      window.web3 = new Web3(web3.currentProvider);
-      Main.web3Provider = web3.currentProvider
-    }
-    // Non-dapp browsers...
-    else {
-      console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-    }
 
-    if(typeof web3 !== 'undefined'){ Main.accountConnected() }
-  },
-  accounts: async () => {
-    const acc = await web3.eth.getAccounts()
-    return acc
-  },
-  accountConnected: async () => {
-    let accounts = await Main.accounts()
+  loadWeb3: async (firstLoad) => {
+    // A Web3Provider wraps a standard Web3 provider, which is
+    // what MetaMask injects as window.ethereum into each page
+    Main.provider = new ethers.providers.Web3Provider(window.ethereum)
+    // MetaMask requires requesting permission to connect users accounts
+    let accounts = await Main.provider.send("eth_requestAccounts", [])
+
+    // The provider also allows signing transactions to
+    // send ether and pay to change state within the blockchain.
+    // For this, we need the account signer...
+    Main.signer = Main.provider.getSigner()
+
     if(accounts.length > 0) {
       Main.account = accounts[0]
-      let acc = accounts[0]
       $walletBtn.hide()
 
-      await Main.loadContract()
+      let available = await Main.loadContract()
+      if(!available) { return }
+
       await Main.fetchAccountData()
     }
     else {
       $walletBtn.show()
     }
   },
+  accounts: async () => {
+    const acc = await web3.eth.getAccounts()
+    return acc
+  },
   fetchAccountData: async () => {
-    if(Main.connected) {
-      $('#main-content').show()
-    }
-    else {
-      $('#wrong-network').show()
-    }
+    $('#main-content').show()
+
     let usdcBalance = await Main.usdc.balanceOf(Main.account)
     $('#usdc-balance').html(
       Main.toCurrency(Main.toEth(usdcBalance.toString()))
@@ -189,9 +183,9 @@ Main = {
     $('#approve-usdc').on('click', async (e) => {
       let amount = Main.toWei('1001')
       Main.buttonLoadingHelper(e, 'approving...', async () => {
-        await Main.usdc.approve(Main.whitelist.address, amount, { from: Main.account }).once("transactionHash", async (txHash) => {
-          Main.handleTransaction(txHash, 'Approving USDC to be spent...')
-        })
+        let tx = await Main.usdc.approve(Main.whitelist.address, amount)
+        Main.handleTransaction(tx.hash, 'Approving USDC to be spent...')
+        await tx.wait()
       })
     })
 
@@ -204,9 +198,9 @@ Main = {
         referrer = '0x0000000000000000000000000000000000000000'
       }
       Main.buttonLoadingHelper(e, 'reserving...', async () => {
-        await Main.whitelist.addToWhitelist(referrer, { from: Main.account }).once("transactionHash", async (txHash) => {
-          Main.handleTransaction(txHash, 'Reserving your spot...')
-        })
+        let tx = await Main.whitelist.addToWhitelist(referrer)
+        Main.handleTransaction(tx.hash, 'Reserving your spot...')
+        await tx.wait()
       })
     })
   },
