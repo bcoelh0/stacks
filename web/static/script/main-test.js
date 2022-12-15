@@ -2,7 +2,6 @@ Main = {
   loading: false,
   contracts: {},
   plansPrice: [100, 250, 500, 1000],
-  connected: false,
   toEth: (n) => {
     return n / 1e6
   },
@@ -41,33 +40,48 @@ Main = {
   setupMetamaskEvents: async () => {
     if(typeof(ethereum) === 'undefined') { return }
 
-    ethereum.on('accountsChanged', async () => {
-      Main.toggleLoadingScreen(true)
+    ethereum.on('accountsChanged', () => {
       window.location.reload()
     });
 
-    ethereum.on('chainChanged', async () => {
-      Main.toggleLoadingScreen(true)
+    ethereum.on('chainChanged', () => {
       window.location.reload()
     });
   },
   loadContract: async () => {
-    const wlArtifact = await $.getJSON('contracts/whitelist-stacks.json')
-    let mainnetAddressWl = '0x8cb951535452bc15763e59b9e5ef7048c8a49e20'
     const usdcArtifact = await $.getJSON('contracts/usdc.json')
-    let mainnetAddressUsdc = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+    const wlArtifact = await $.getJSON('contracts/whitelist-stacks.json')
+    const { chainId } = await Main.provider.getNetwork()
+
+    let usdcAddress, wlAddress
+    if(chainId == 1) {
+      // mainnet
+      usdcAddress = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+      wlAddress = '0x8cb951535452bc15763e59b9e5ef7048c8a49e20'
+    }
+    else if(chainId == 5) {
+      // goerli
+      usdcAddress = '0xe56B86e8f3DADAE9c48a0491E53dE75B4918BF93'
+      wlAddress = '0x13183CAD4552725ab8Cc49df2a9D77e81Cc0750D'
+    }
+    else {
+      // unsupported network
+      alert('Unsupported network. Please change network to Ethereum Mainnet')
+      $('.loading').hide()
+      $('#wrong-network').show()
+
+      return false
+    }
 
     try {
       // Init contracts
-      Main.whitelist = new ethers.Contract(mainnetAddressWl, wlArtifact["abi"], Main.signer)
-      Main.usdc = new ethers.Contract(mainnetAddressUsdc, usdcArtifact["abi"], Main.signer)
-      Main.connected = true
+      Main.usdc = new ethers.Contract(usdcAddress, usdcArtifact["abi"], Main.signer)
+      Main.whitelist = new ethers.Contract(wlAddress, wlArtifact["abi"], Main.signer)
     }
     catch {
       console.log('error loading contracts')
-      Main.connected = false
-      alert('Please change network to Ethereum Mainnet')
     }
+    return true
   },
 
   loadWeb3: async (firstLoad) => {
@@ -82,35 +96,26 @@ Main = {
     // For this, we need the account signer...
     Main.signer = Main.provider.getSigner()
 
-
     if(accounts.length > 0) {
       Main.account = accounts[0]
       $walletBtn.hide()
 
-      await Main.loadContract()
+      let available = await Main.loadContract()
+      if(!available) { return }
+
       await Main.fetchAccountData()
     }
     else {
       $walletBtn.show()
     }
-
-
-
   },
   accounts: async () => {
     const acc = await web3.eth.getAccounts()
     return acc
   },
-  // accountConnected: async () => {
-  //   let accounts = await Main.accounts()
-  // },
   fetchAccountData: async () => {
-    if(Main.connected) {
-      $('#main-content').show()
-    }
-    else {
-      $('#wrong-network').show()
-    }
+    $('#main-content').show()
+
     let usdcBalance = await Main.usdc.balanceOf(Main.account)
     $('#usdc-balance').html(
       Main.toCurrency(Main.toEth(usdcBalance.toString()))
@@ -181,6 +186,7 @@ Main = {
       Main.buttonLoadingHelper(e, 'approving...', async () => {
         let tx = await Main.usdc.approve(Main.whitelist.address, amount)
         Main.handleTransaction(tx.hash, 'Approving USDC to be spent...')
+        await tx.wait()
       })
     })
 
@@ -195,6 +201,7 @@ Main = {
       Main.buttonLoadingHelper(e, 'reserving...', async () => {
         let tx = await Main.whitelist.addToWhitelist(referrer)
         Main.handleTransaction(tx.hash, 'Reserving your spot...')
+        await tx.wait()
       })
     })
   },
