@@ -86,7 +86,8 @@ Main = {
   }
 }
 
-const network = 'goerli' // 'mainnet'
+// const network = 'mainnet'
+const network = 'goerli'
 
 if(process.argv[2] == 'start-contract') {
   let access = (process.argv[3].toString() == 'true') ? true : false

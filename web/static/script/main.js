@@ -15,7 +15,11 @@ Main = {
   load: async () => {
     $walletBtn = $('#wallet')
     Main.toggleLoadingScreen(true)
-    await Main.loadWeb3(true)
+    let available = await Main.loadWeb3(true)
+    console.log(available)
+    if(!available) {
+      $('#no-mm').show()
+    }
 
     $walletBtn.on('click', async () => {
       await Main.loadWeb3(false)
@@ -84,6 +88,8 @@ Main = {
   },
 
   loadWeb3: async (firstLoad) => {
+    if(typeof(ethereum) === 'undefined') { return false }
+
     // A Web3Provider wraps a standard Web3 provider, which is
     // what MetaMask injects as window.ethereum into each page
     Main.provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -107,6 +113,8 @@ Main = {
     else {
       $walletBtn.show()
     }
+
+    return true
   },
   accounts: async () => {
     const acc = await web3.eth.getAccounts()
