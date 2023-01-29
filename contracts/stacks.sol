@@ -34,7 +34,6 @@ contract Stacks is ERC721, ERC2981, Ownable {
     require(!tokenMetaDataRecord[_tokenId].minted, "Token has already been minted");
 
     _safeMint(msg.sender, _tokenId);
-    // tokenMetaDataRecord[_tokenId].minted = true;
     tokenMetaDataRecord[_tokenId] = TokenMetaData(true, block.timestamp);
   }
 
@@ -52,16 +51,16 @@ contract Stacks is ERC721, ERC2981, Ownable {
     mintOpen = _open;
   }
 
-  // Mint token to offer new team members
-  function teamMint(uint _tokenId, address _teamMember) public onlyOwner {
-    // _tokenId for team must be between 4010 and 5000
-    require(_tokenId > softCap, "Token ID too low");
+  // Mint token for team members
+  function teamMint(address _teamMember) public onlyOwner {
+    // _tokenId for team is between 4010 and 5000
+    uint _tokenId = softCap + teamMinted + 1;
     require(_tokenId <= maxSupply, "Token ID is too high");
-    // addAvailableForMint
-    tokenMinter[_tokenId] = _teamMember;
-    // prepTokenMetadata
+    // set minter
+    addAvailableForMint(_tokenId, _teamMember);
+    // set mint timestamp
     tokenMetaDataRecord[_tokenId] = TokenMetaData(true, block.timestamp);
-    // mint
+    // mint token
     _safeMint(msg.sender, _tokenId);
     teamMinted++;
   }
