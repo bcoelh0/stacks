@@ -4,8 +4,7 @@ pragma solidity >=0.4.22 <0.9.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./Stacks.sol";
 
-contract StacksAuctionHouse is Ownable {
-  Stacks public stacks;
+contract StacksAuctionHouse is Ownable, Stacks {
   mapping(uint => Auction) public auctions;
   mapping(uint => address payable) public auctionWinner;
   uint public totalAuctions = 0;
@@ -18,8 +17,7 @@ contract StacksAuctionHouse is Ownable {
     bool active;
   }
 
-  constructor(address _stacksAddress, address payable _treasuryAddress) {
-    stacks = Stacks(_stacksAddress);
+  constructor(address payable _treasuryAddress) {
     treasuryAddress = _treasuryAddress;
 
     uint startTime = 1677628800; // Wed Mar 01 2023 00:00:00 GMT+0000
@@ -87,7 +85,7 @@ contract StacksAuctionHouse is Ownable {
 
   function allowMint(uint _tokenId) private {
     // Allow the winner to mint the token on the Stacks contract
-    stacks.addAvailableForMint(_tokenId, auctionWinner[_tokenId]);
+    addAvailableForMint(_tokenId, auctionWinner[_tokenId]);
   }
 
   // Admin functions

@@ -9,7 +9,7 @@ contract Stacks is ERC721, ERC2981, Ownable {
   bytes4 private constant _INTERFACE_ID_ERC2981 = 0x2a55205a;
 
   uint public constant PERCENT_DIVIDER = 10000;
-  uint public SALE_FEE = 1000;
+  uint public SALE_FEE = 1000; // 10%
 
   mapping(uint => address) public tokenMinter;
   mapping(uint => TokenMetaData) public tokenMetaDataRecord;
@@ -39,16 +39,9 @@ contract Stacks is ERC721, ERC2981, Ownable {
   }
 
   // Set who can mint the token with tokenId
-  function addAvailableForMint(uint _tokenId, address _auctionWinner) public {
-    require(msg.sender == auctionHouse, "You are not the auction house");
+  function addAvailableForMint(uint _tokenId, address _auctionWinner) internal {
     tokenMinter[_tokenId] = _auctionWinner;
   }
-
-  // Runs before the auction so the auction house can set the metadata
-  // function prepTokenMetadata(uint tokenId) public {
-  //   require(msg.sender == auctionHouse, "You are not the auction house");
-  //   tokenMetaDataRecord[tokenId] = TokenMetaData(false, block.timestamp);
-  // }
 
   // Admin functions
   function setAuctionHouse(address _auctionHouse) public onlyOwner {
@@ -74,6 +67,7 @@ contract Stacks is ERC721, ERC2981, Ownable {
   }
 
   function setRegularFee(uint _SALE_FEE) public onlyOwner {
+    require(_SALE_FEE <= 3300, "Fee must be less or equal to 33%");
     SALE_FEE = _SALE_FEE;
   }
 
