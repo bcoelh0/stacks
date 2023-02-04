@@ -25,7 +25,7 @@ contract Stacks is ERC721, ERC2981, Ownable {
     uint timestamp;
   }
 
-  constructor() ERC721("Stacks", "STACKS") {}
+  constructor() ERC721("Stacks Alpha Card", "STACKS") {}
 
   function mint(uint _tokenId) public {
     require(mintOpen, "Minting is not open");
@@ -56,6 +56,22 @@ contract Stacks is ERC721, ERC2981, Ownable {
     // _tokenId for team is between 4010 and 5000
     uint _tokenId = softCap + teamMinted + 1;
     require(_tokenId <= maxSupply, "Token ID is too high");
+
+    // make it so team can only mint 300 tokens per year
+    // 2023: 4010 - 4309
+    if(_tokenId >= 4310) {
+      // 2024: 4310 - 4609
+      require(block.timestamp > 1704067199, "Team can only mint 300 tokens in 2023"); // 31/12/2023
+    }
+    if(_tokenId >= 4610) {
+      // 2025: 4610 - 4909
+      require(block.timestamp > 1735689599, "Team can only mint 300 tokens in 2024"); // 31/12/2024
+    }
+    if(_tokenId >= 4910) {
+      // 2026: 4910 - 5000
+      require(block.timestamp > 1767225599, "Team can only mint the remaining tokens in 2025"); // 31/12/2025
+    }
+
     // set minter
     addAvailableForMint(_tokenId, _teamMember);
     // set mint timestamp
@@ -88,6 +104,6 @@ contract Stacks is ERC721, ERC2981, Ownable {
 
   // Overwrite _baseURI
   function _baseURI() override pure internal returns (string memory) {
-    return "ipfs://QmY2aPCZQNvsZUQvUS2g6cCSmdLXuhrHnRUEcoLfwy9HW4";
+    return "ipfs://QmX7RzdCUHzPng8mssTpXABWTxVFVQwNX124tmpQUQiF9p/stacks";
   }
 }
