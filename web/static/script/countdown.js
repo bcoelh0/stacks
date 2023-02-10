@@ -1,31 +1,56 @@
-var countDownDate = new Date("Dec 15, 2022 18:00:00").getTime();
+window.onload = function () {
+  // needs a better solution
+  setTimeout(function () {
+    contDown = document.getElementById("countdown");
+    countFrom = parseInt(contDown.dataset.date) * 1000;
+    let date = new Date(countFrom);
+    countUpFromTime(date, contDown);
+  }, 500)
+};
 
-// Update the count down every 1 second
-var x = setInterval(function () {
-  // Get today's date and time
-  var now = new Date().getTime();
+function countUpFromTime(countFrom, idEl) {
+  var now = new Date(),
+    countFrom = new Date(countFrom),
+    timeDifference = now - countFrom;
 
-  // Find the distance between now and the count down date
-  var distance = countDownDate - now;
+  var secondsInADay = 60 * 60 * 1000 * 24,
+    secondsInAHour = 60 * 60 * 1000;
 
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  // Display the result in the element with id="demo"
-  document.getElementById("days").innerHTML = days;
-  document.getElementById("hours").innerHTML = hours;
-  document.getElementById("minutes").innerHTML = minutes;
-  document.getElementById("seconds").innerHTML = seconds;
-
-  // If the count down is finished, write some text
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("days").innerHTML = "0";
-    document.getElementById("hours").innerHTML = "0";
-    document.getElementById("minutes").innerHTML = "0";
-    document.getElementById("seconds").innerHTML = "0";
+  hours = Math.floor(((timeDifference % secondsInADay) / secondsInAHour) * 1)
+    .toString()
+    .replace("-", "");
+  if (hours.length === 1) {
+    hours = "0" + hours;
   }
-}, 1000);
+  mins = Math.floor(
+    (((timeDifference % secondsInADay) % secondsInAHour) / (60 * 1000)) * 1
+  )
+    .toString()
+    .replace("-", "");
+  if (mins.length === 1) {
+    mins = "0" + mins;
+  }
+  secs = Math.floor(
+    ((((timeDifference % secondsInADay) % secondsInAHour) % (60 * 1000)) /
+      1000) *
+      1
+  )
+    .toString()
+    .replace("-", "");
+  if (secs.length === 1) {
+    secs = "0" + secs;
+  }
+
+  idEl.getElementsByClassName("hours")[0].innerHTML = (hours + "")[0];
+  idEl.getElementsByClassName("hours")[1].innerHTML = (hours + "")[1];
+  idEl.getElementsByClassName("minutes")[0].innerHTML = (mins + "")[0];
+  idEl.getElementsByClassName("minutes")[1].innerHTML = (mins + "")[1];
+  idEl.getElementsByClassName("seconds")[0].innerHTML = (secs + "")[0];
+  idEl.getElementsByClassName("seconds")[1].innerHTML = (secs + "")[1];
+  // idEl.getElementsByClassName("seconds")[0].innerHTML = secs;
+
+  clearTimeout(countUpFromTime.interval);
+  countUpFromTime.interval = setTimeout(function () {
+    countUpFromTime(countFrom, idEl);
+  }, 1000);
+}

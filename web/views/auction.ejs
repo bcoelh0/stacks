@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind for pure styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/styles/auction/style.css" />
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Title -->
+    <title>Stacks</title>
+  </head>
+
+  <body class="bg-[#F7F7F0]">
+    <!-- Header -->
+    <div class="px-4 lg:max-w-screen-2xl mx-auto">
+      <!-- Top menu -->
+      <nav
+        id="nav"
+        class="flex items-center py-5 justify-between flex-row-reverse lg:flex-row z-[1] relative lg:h-[86px]"
+      >
+        <!-- Left Menu -->
+        <div
+          class="hidden lg:flex lg:items-center lg:gap-8 flex-1 font-semibold"
+        >
+          <a
+            href="#"
+            class="flex font-[Poppins] items-center shadow-none gap-1 text-lg"
+            >Docs</a
+          >
+          <a
+            href="https://docs.stacksfi.xyz/launch/whitelist"
+            class="shadow-none font-[Poppins] text-lg"
+            >Discourse</a
+          >
+        </div>
+        <!-- /Left Menu -->
+
+        <!-- Mobile Button -->
+        <img
+          id="button"
+          src="/static/images/bugger.svg"
+          alt=""
+          class="cursor-pointer z-[99] lg:hidden"
+        />
+        <!-- /Mobile Button -->
+
+        <!-- Logo -->
+        <img class="z-[99]" src="/static/images/logo.svg" alt="" />
+        <!-- /Logo -->
+
+        <!-- Right Menu -->
+        <div
+          class="lg:flex hidden gap-8 flex-1 justify-end items-center font-semibold"
+        >
+          <a
+            href="https://discord.com/invite/zpmUK2e4ST"
+            class="shadow-none text-lg font-[Poppins]"
+            >Discord</a
+          >
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-lg font-[Poppins]"
+            >Twitter</a
+          >
+          <a href="#" class="shadow-none text-lg font-[Poppins]">Mirror</a>
+          <!-- <a
+            href="#"
+            class="py-2 px-4 bg-[white] border-[#7F859] text-lg font-[Poppins] shadow-none rounded-lg border-[#7F859] border"
+            >Connect</a
+          > -->
+          <div class="dropdown relative">
+            <button
+              class="py-2 dropbtn px-4 flex items-center gap-2.5 text-base bg-[#fff8] hover:bg-[white] border-[#7F859] border-2 font-medium font-[Poppins] shadow-none rounded-lg"
+            >
+              Connect Wallet
+            </button>
+            <div
+              id="myDropdown"
+              class="dropdown-content hidden absolute w-full bg-white top-full mt-1 border-[#7F859] flex flex-col border-2 rounded-xl py-2"
+            >
+              <a
+                class="font-[Poppins] text-base shadow-none px-4 py-2 text-[#7F8596]"
+                href="#home"
+                >Switch Wallet</a
+              >
+              <a
+                class="font-[Poppins] text-base shadow-none px-4 py-2 text-[red] hover:text-[black]"
+                href="#about"
+                >Disconnect</a
+              >
+            </div>
+          </div>
+        </div>
+        <!-- /Right Menu -->
+
+        <!-- Mobile Menu -->
+        <div
+          id="modal"
+          class="fixed overflow-hidden lg:hidden duration-300 inset-0 bottom-full bg-[#fff] flex flex-col gap-4 items-center justify-center"
+        >
+          <!-- remove "mt-auto" class in bottom if does not exists account -->
+          <a
+            href="https://docs.stacksfi.xyz/launch/whitelist"
+            class="shadow-none text-4xl mt-auto"
+            >Docs</a
+          >
+          <a
+            href="https://docs.stacksfi.xyz/launch/whitelist"
+            class="shadow-none text-4xl"
+            >Discourse</a
+          >
+          <a
+            href="https://discord.com/invite/zpmUK2e4ST"
+            class="shadow-none text-4xl"
+            >Discord</a
+          >
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-4xl"
+            >Twitter</a
+          >
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-4xl"
+            >Mirror</a
+          >
+          <!-- When has account -->
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-4xl mt-auto"
+            >Switch Wallet</a
+          >
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-4xl mb-6 text-[red] hover:text-[bkack]"
+            >Disconnect</a
+          >
+          <!-- /When has account -->
+        </div>
+        <!-- /Mobile Menu -->
+      </nav>
+      <!-- /Top menu -->
+
+      <!-- Hero -->
+      <header
+        class="flex lg:gap-20 gap-9 flex-col pb-10 lg:flex-row lg:py-10 lg:pt-0"
+      >
+        <div
+          class="flex w-full rounded-[32px] border-[#ADAD99] border p-2 overflow-hidden aspect-square lg:aspect-[unset] lg:h-[672px]"
+        >
+          <div
+            style="background-image: url(/static/images/main.png)"
+            class="rounded-[24px] bg-cover bg-center w-full h-full"
+          ></div>
+        </div>
+        <div
+          class="flex flex-col lg:flex-[0_0_480px] w-full text-center lg:py-5 lg:text-left"
+        >
+          <!-- Date -->
+          <div
+            class="flex items-center justify-between lg:justify-start lg:gap-3 text-xl font-[Poppins] font-semibold text-[#7F8596]"
+          >
+            <a href="#" class="opacity-70 hover:opacity-100 disabled"><img src="/static/images/arrow.svg" alt=""/></a>
+            <span id="auction-date">January 24, 2023</span>
+
+            <!-- <a href="#" class="opacity-70 hover:opacity-100 rotate-180 disabled"><img src="/static/images/arrow.svg" alt=""/></a> -->
+          </div>
+          <!-- /Date -->
+
+          <h1
+            class="text-[48px] lg:text-[66px] lg:leading-[72px] leading-[56px] shadow-none text-[#22252D] lg:whitespace-nowrap"
+          >
+            STACKS ACCESS CARD
+          </h1>
+          <div
+            class="flex text-[#22252D] font-bold text-lg items-center lg:justify-start gap-2.5 justify-center mb-6 lg:mb-7"
+          >
+            <div
+              class="flex bg-[#F1FF54] rounded-[30px] w-fit p-1 pl-2 gap-1 border-[#DFEC4A]"
+            >
+              <span id="auction-price"></span> <span class="px-1.5 bg-[#E2F319] rounded-[20px]">ETH</span>
+            </div>
+            <!-- $1,585.89 -->
+          </div>
+          <!-- Count down -->
+          <div
+            id="countdown"
+            data-date=""
+            class="flex flex-col gap-6 border-[#E7E7E1] border-2 rounded-[24px] py-4 items-center bg-white"
+          >
+            <!--  Title -->
+            <div
+              class="flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-2"
+            >
+              <p class="text-[#494E5B] font-bold lg:text-base">
+                Auction ending on
+              </p>
+              <p
+                class="border-[#D2EBD8] border-[2px] py-1 px-3 rounded-[6px] text-[#00AC54] font-bold lg:text-sm"
+              >
+                <span id="auction-end-date">25 Jan 2023 @ 00:00 GMT</span>
+              </p>
+            </div>
+            <!-- /Title -->
+
+            <!-- Timer -->
+            <div class="flex justify-center gap-2 lg:text-center lg:gap-3">
+              <!-- Item -->
+              <div class="flex flex-col gap-2">
+                <!-- Counter -->
+                <div class="flex gap-1">
+                  <!-- Count item -->
+                  <span
+                    class="w-[42px] hours lg:w-[50px] h-12 lg:h-14 lg:flex lg:items-center lg:justify-center bg-[#22252D] rounded text-white text-[32px] lg:text-[48px] font-bold text-center"
+                    >2</span
+                  >
+                  <!-- /Count Item -->
+                  <!-- Count item -->
+                  <span
+                    class="w-[42px] hours lg:w-[50px] h-12 lg:h-14 lg:flex lg:items-center lg:justify-center bg-[#22252D] rounded text-white text-[32px] lg:text-[48px] font-bold text-center"
+                    >2</span
+                  >
+                  <!-- /Count Item -->
+                </div>
+                <!-- Title -->
+                <span class="text-sm text-[#7F8596] font-semibold">hours</span>
+              </div>
+              <!-- /Item -->
+              <!-- Breaker -->
+              <div class="w-[1px] bg-[#E7E7E1] rounded"></div>
+              <!-- /Breaker -->
+
+              <!-- Item -->
+              <div class="flex flex-col gap-2">
+                <!-- Counter -->
+                <div class="flex gap-1">
+                  <!-- Count item -->
+                  <span
+                    class="w-[42px] minutes lg:w-[50px] h-12 lg:h-14 lg:flex lg:items-center lg:justify-center bg-[#22252D] rounded text-white text-[32px] lg:text-[48px] font-bold text-center"
+                    >2</span
+                  >
+                  <!-- /Count Item -->
+                  <!-- Count item -->
+                  <span
+                    class="w-[42px] minutes lg:w-[50px] h-12 lg:h-14 lg:flex lg:items-center lg:justify-center bg-[#22252D] rounded text-white text-[32px] lg:text-[48px] font-bold text-center"
+                    >2</span
+                  >
+                  <!-- /Count Item -->
+                </div>
+                <!-- Title -->
+                <span class="text-sm text-[#7F8596] font-semibold"
+                  >minutes</span
+                >
+              </div>
+              <!-- /Item -->
+              <!-- Breaker -->
+              <div class="w-[1px] block bg-[#E7E7E1] rounded"></div>
+              <!-- /Breaker -->
+
+              <!-- Item -->
+              <div class="flex flex-col gap-2">
+                <!-- Counter -->
+                <div class="flex gap-1">
+                  <!-- Count item -->
+                  <span
+                    class="w-[42px] seconds lg:w-[50px] h-12 lg:h-14 lg:flex lg:items-center lg:justify-center bg-[#22252D] rounded text-white text-[32px] lg:text-[48px] font-bold text-center"
+                    >2</span
+                  >
+                  <!-- /Count Item -->
+                  <!-- Count item -->
+                  <span
+                    class="w-[42px] seconds lg:w-[50px] h-12 lg:h-14 lg:flex lg:items-center lg:justify-center bg-[#22252D] rounded text-white text-[32px] lg:text-[48px] font-bold text-center"
+                    >2</span
+                  >
+                  <!-- /Count Item -->
+                </div>
+                <!-- Title -->
+                <span class="text-sm text-[#7F8596] font-semibold"
+                  >seconds</span
+                >
+              </div>
+              <!-- /Item -->
+            </div>
+          </div>
+          <!-- /Count down -->
+
+          <!-- Form -->
+          <form class="flex flex-col gap-4 mt-6 mb-8 lg:flex-row">
+            <input
+              id="bid-amount"
+              type="text"
+              class="w-full py-4 px-5 rounded-xl text-xl font-bold border-[#D9DADF] border-2 bg-white placeholder:text-[#7F8596]"
+              placeholder="34.56 or more"
+            />
+            <!-- set opacity-70 to show like disabled -->
+            <button
+              style="background-image: url(/static/images/button_bg.png)"
+              class="bg-[length:100%_100%] hidden animated-button lg:block h-14 lg:h-full lg:text-[32px] text-white pb-0.5 disabled">
+              <h1 class="shadow-none w-44">PLACE BID</h1>
+            </button>
+            <button class="lg:hidden animated-button">
+              <img
+                src="/static/images/place_bit.svg"
+                class="w-full max-w-[480px] mx-auto"
+                alt=""
+              />
+            </button>
+          </form>
+          <!-- /Form -->
+
+          <!-- History -->
+          <div class="flex flex-col gap-4">
+            <button class="shadow-none">
+              <p
+                class="flex text-base font-[Poppins] font-bold text-[#494E5B] items-center duration-150 hover:text-[#00AC54] gap-2">
+                Last Bidder
+              </p>
+            </button>
+            <!-- List -->
+            <ul class="flex flex-col gap-2">
+              <!-- Item -->
+              <li
+                class="bg-white rounded-[60px] p-2 font-bold text-[#1F2128] flex items-center justify-between pr-4"
+              >
+                <div class="flex gap-2 items-center">
+                  <img
+                    src="/static/images/history_avatar.png"
+                    class="w-6 h-6 rounded-full bg-cover"
+                    alt=""
+                  />
+                  <span id="auction-bidder"></span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <!-- /Hero -->
+    </div>
+    <!-- /Header -->
+
+    <!-- Get Started -->
+    <section
+      style="background-image: url(/static/images/rectangle_bg.jpg)"
+      class="bg-cover"
+    >
+      <div
+        class="max-w-[1100px] mx-auto px-4 py-20 flex flex-col gap-10 lg:flex-row lg:justify-between lg:py-28"
+      >
+        <div
+          class="flex flex-col max-w-[460px] gap-6 items-center lg:items-start text-center mx-auto lg:text-left lg:mx-0"
+        >
+          <h2 class="text-[72px] text-white leading-[56px] shadow-none">
+            ACCESS REAL YIELD WITH
+            <span class="text-[#00FB7A]">STACKS</span>
+          </h2>
+          <p class="text-lg text-[#E7E7E1] lg:mb-6">
+            Stacks finance is an investment DAO that manages a treasury created
+            by the sale of our exclusive Stacks NFTs.
+            <br /><br />
+            We auction one NFT per day. Sales from the NFTs create a treasury
+            that's expertly invested. NFT holders can access revenue share from
+            said treasury.
+          </p>
+
+          <a href="#" class="animated-button"
+            ><img src="/static/images/learn.svg" class="mt-4" alt=""
+          /></a>
+        </div>
+        <img src="/static/images/help.png" class="max-w-full" alt="" />
+      </div>
+    </section>
+
+    <!-- FAQs -->
+    <section class="w-full px-4 py-8 lg:py-16">
+      <div class="max-w-[1100px] mx-auto flex flex-col gap-10">
+        <h2
+          class="text-[72px] text-[#22252D] text-center leading-[56px] lg:text-center text-[#22252D] shadow-none lg:mb-6"
+        >
+          TL;DR OF <span class="text-[#00AC54]"> STACKS</span>
+        </h2>
+        <div class="flex flex-col bg-white rounded-[24px] px-6 w-full lg:p-8">
+          <!-- Start item -->
+          <button
+            class="accordion gap-2 flex justify-between text-xl font-semibold py-6"
+          >
+            <!-- Title -->
+            What is Stacks Finance?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              <!-- Description -->
+              Stacks finance is an investment club that manages a treasury
+              created by the sale and re-sale of our exclusive Stacks NFTs. Our
+              NFTs give the holder access to our dapp where they can see data
+              about how the treasury is invest, the returns and they can manage
+              their funds. The bulk of the investment is made of the revenue of
+              the sales of the NFTs and this principal is to be invested in
+              multiple vehicles. For more information about this check this
+              page. The dapp, contracts and NFTs will live in the Ethereum
+              network.
+            </p>
+          </div>
+          <!-- End Item -->
+
+          <button
+            class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]"
+          >
+            What does it do?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              Stacks will be a hedge to degen plays in the market. We want to
+              create a fund that makes stables and safe investments that give a
+              consistent return every month to holders of the NFT. Returns from
+              the treasury investment are distributed as follows: 50% reinvested
+              into the treasury investments 50% distributed to NFT holders The
+              funds for the monthly profits become available on the 1st of every
+              month as USDC. As an NFT holder you'll have access to your share
+              of these funds. For an example check this page.
+            </p>
+          </div>
+
+          <button
+            class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]"
+          >
+            How can I participate?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              Stacks finance is an investment club that manages a treasury
+              created by the sale and re-sale of our exclusive Stacks NFTs. Our
+              NFTs give the holder access to our dapp where they can see data
+              about how the treasury is invest, the returns and they can manage
+              their funds. The bulk of the investment is made of the revenue of
+              the sales of the NFTs and this principal is to be invested in
+              multiple vehicles. For more information about this check this
+              page. The dapp, contracts and NFTs will live in the Ethereum
+              network.
+            </p>
+          </div>
+
+          <button
+            class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]"
+          >
+            How does the DAO make money?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              Stacks finance is an investment club that manages a treasury
+              created by the sale and re-sale of our exclusive Stacks NFTs. Our
+              NFTs give the holder access to our dapp where they can see data
+              about how the treasury is invest, the returns and they can manage
+              their funds. The bulk of the investment is made of the revenue of
+              the sales of the NFTs and this principal is to be invested in
+              multiple vehicles. For more information about this check this
+              page. The dapp, contracts and NFTs will live in the Ethereum
+              network.
+            </p>
+          </div>
+
+          <button
+            class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]"
+          >
+            How do I join the whitelist?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              Stacks finance is an investment club that manages a treasury
+              created by the sale and re-sale of our exclusive Stacks NFTs. Our
+              NFTs give the holder access to our dapp where they can see data
+              about how the treasury is invest, the returns and they can manage
+              their funds. The bulk of the investment is made of the revenue of
+              the sales of the NFTs and this principal is to be invested in
+              multiple vehicles. For more information about this check this
+              page. The dapp, contracts and NFTs will live in the Ethereum
+              network.
+            </p>
+          </div>
+          <button
+            class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]"
+          >
+            Checkout our links and community
+
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base flex flex-col">
+              <a href="#" class="shadow-none text-4xl">DISCORD</a>
+              <a href="#" class="shadow-none text-4xl">TWITTER</a>
+              <a href="#" class="shadow-none text-4xl">MIRROR</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Join Community -->
+
+    <section class="py-16 w-full">
+      <div
+        style="
+          background-image: url(/static/images/community.jpg);
+          background-position: center bottom;
+        "
+        class="xl:max-w-screen-2xl mx-auto py-16 mt-3 bg-cover flex flex-col items-center gap-12 pb-96 mx-4 rounded-[24px] 2xl:mr-auto 2xl:ml-auto xl:aspect-[16/9] lg:pt-28"
+      >
+        <h2
+          class="text-[72px] text-white text-center leading-[56px] shadow-none lg:text-[100px]"
+        >
+          JOIN THE <span class="text-[#00FB7A]"> COMMUNITY</span>
+        </h2>
+        <!-- Social Networks -->
+        <div class="flex items-center gap-6">
+          <a href="https://discord.com/invite/zpmUK2e4ST">
+            <img src="/static/images/discord.svg" alt="" />
+          </a>
+          <a href="https://twitter.com/stacksfi_xyz">
+            <img src="/static/images/twitter.svg" alt="" />
+          </a>
+          <a href="#">
+            <img src="/static/images/github.svg" alt="" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="xl:max-w-screen-2xl mx-auto w-full px-4">
+      <div class="flex lg:items-center items-start justify-between w-full">
+        <div
+          class="flex items-start flex-col lg:gap-12 gap-2 text-[#7F8596] lg:flex-row"
+        >
+          <a href="#" class="shadow-none text-3xl">Discource</a>
+          <a href="#" class="shadow-none text-3xl">Docs</a>
+        </div>
+        <div class="flex items-center lg:gap-6 gap-4">
+          <a href="#"
+            ><img src="/static/images/discord_active.svg" alt=""
+          /></a>
+          <a href="#"
+            ><img src="/static/images/twitter_active.svg" alt=""
+          /></a>
+        </div>
+      </div>
+      <div class="w-full bg-[#E7E7E1] h-[1px] my-6"></div>
+      <div class="flex items-centr justify-between mb-6">
+        <p class="text-sm text-[#7F8596]">© 2023 Stacked Finance</p>
+        <p class="text-sm text-[#7F8596]">Privacy policy</p>
+      </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Connect Modal -->
+    <div
+      id="connect_modal"
+      class="fixed hidden inset-0 bg-[#141416bb] z-[999] p-6 flex items-center justify-center"
+    >
+      <!-- Block -->
+      <div class="bg-white max-w-[768px] w-full lg:p-12 p-8 rounded-[20px]">
+        <!-- Top -->
+        <div class="flex justify-between items-center">
+          <h1 class="shadow-none lg:text-[56px] text-[36px]">CONNECT WALLET</h1>
+          <button
+            class="hover:rotate-90 duration-150"
+            onclick="toggleModal('connect_modal')"
+          >
+            <img src="/static/images/close.svg" alt="" />
+          </button>
+        </div>
+        <!-- /Top -->
+
+        <!-- Main -->
+        <div class="grid lg:grid-cols-2 mt-4 lg:gap-16">
+          <div class="flex flex-col" id="connect-wallet">
+            <!-- Item -->
+            <a
+              href="#"
+              class="py-5 lg:py-6 font-[Poppins] shadow-none font-semibold lg:text-xl text-lg border-b border-[#F1F1F1] flex justify-between items-center w-full"
+            >
+              <div class="flex items-center gap-5">
+                <img src="/static/images/metamask.svg" alt="" />
+                Metamask
+              </div>
+              <button class="w-fit">
+                <img
+                  src="/static/images/down.svg"
+                  class="rotate-90 w-5"
+                  alt=""
+                />
+              </button>
+            </a>
+            <!-- /Item -->
+            <!-- Item -->
+            <a
+              href="#"
+              class="py-5 lg:py-6 font-[Poppins] shadow-none font-semibold lg:text-xl text-lg border-b border-[#F1F1F1] flex justify-between items-center w-full"
+            >
+              <div class="flex items-center gap-5">
+                <img src="/static/images/coinbase.svg" alt="" />
+                Coinbase Wallet
+              </div>
+              <button class="w-fit">
+                <img
+                  src="/static/images/down.svg"
+                  class="rotate-90 w-5"
+                  alt=""
+                />
+              </button>
+            </a>
+            <!-- /Item -->
+            <!-- Item -->
+            <a
+              href="#"
+              class="py-5 lg:py-6 font-[Poppins] shadow-none font-semibold lg:text-xl text-lg border-b border-[#F1F1F1] flex justify-between items-center w-full"
+            >
+              <div class="flex items-center gap-5">
+                <img src="/static/images/wallet.svg" alt="" />
+                WalletConnect
+              </div>
+              <button class="w-fit">
+                <img
+                  src="/static/images/down.svg"
+                  class="rotate-90 w-5"
+                  alt=""
+                />
+              </button>
+            </a>
+            <!-- /Item -->
+            <!-- Item -->
+            <a
+              href="#"
+              class="py-5 lg:py-6 font-[Poppins] shadow-none font-semibold lg:text-xl text-lg flex justify-between items-center w-full"
+            >
+              <div class="flex items-center gap-5">
+                <img src="/static/images/formatic.svg" alt="" />
+                Fortmatic
+              </div>
+              <button class="w-fit">
+                <img
+                  src="/static/images/down.svg"
+                  class="rotate-90 w-5"
+                  alt=""
+                />
+              </button>
+            </a>
+            <!-- /Item -->
+          </div>
+          <!-- QR -->
+          <div
+            class="rounded-[20px] hidden lg:block border-[5px] w-[260px] ml-auto border-[#00AC54] p-6"
+          >
+            <img
+              src="/static/images/qr.png"
+              class="w-full aspect-square"
+              alt=""
+            />
+            <h2 class="shadow-none text-[#00AC54] text-[32px] text-center mt-3">
+              SCAN ME!
+            </h2>
+          </div>
+        </div>
+        <!-- /Main -->
+        <button
+          class="border-[#E6E8EC] border-2 rounded-full text-base font-semibold w-full p-3 lg:p-4 mt-6 hover:bg-[#E6E8EC]"
+        >
+          Clear WalletConnect Data
+        </button>
+      </div>
+    </div>
+    <!-- /Connect -->
+
+    <!-- Scripts -->
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" type="application/javascript"></script>
+    <script src="/static/script/read-auction.js"></script>
+    <!-- <script src="/static/script/main-auction.js"></script> -->
+
+    <script src="/static/script/index-auction.js"></script>
+    <script src="/static/script/countdown.js"></script>
+  </body>
+</html>

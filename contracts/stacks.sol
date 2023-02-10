@@ -4,6 +4,7 @@ pragma solidity >=0.4.22 <0.9.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
+import "./WhitelistData.sol";
 
 contract Stacks is ERC721, ERC2981, Ownable {
   bytes4 private constant _INTERFACE_ID_ERC2981 = 0x2a55205a;
@@ -11,13 +12,15 @@ contract Stacks is ERC721, ERC2981, Ownable {
   uint public constant PERCENT_DIVIDER = 10000;
   uint public SALE_FEE = 1000; // 10%
 
+  bool public wlMintOpen;
+
   mapping(uint => address) public tokenMinter;
   mapping(uint => TokenMetaData) public tokenMetaDataRecord;
 
   address public auctionHouse;
   bool public mintOpen;
   uint public maxSupply = 5000; // Immutable
-  uint public softCap = 4009;
+  uint public softCap = 4009; // Available for auction - Immutable
   uint public teamMinted = 0;
 
   struct TokenMetaData {
@@ -25,7 +28,7 @@ contract Stacks is ERC721, ERC2981, Ownable {
     uint timestamp;
   }
 
-  constructor() ERC721("Stacks Alpha Card", "STACKS") {}
+  constructor() ERC721("Stacks Investment Card", "STACKS") {}
 
   function mint(uint _tokenId) public {
     require(mintOpen, "Minting is not open");
@@ -33,8 +36,8 @@ contract Stacks is ERC721, ERC2981, Ownable {
     require(tokenMinter[_tokenId] == msg.sender, "You are not allowed to mint this token");
     require(!tokenMetaDataRecord[_tokenId].minted, "Token has already been minted");
 
-    _safeMint(msg.sender, _tokenId);
     tokenMetaDataRecord[_tokenId] = TokenMetaData(true, block.timestamp);
+    _safeMint(msg.sender, _tokenId);
   }
 
   // Set who can mint the token with tokenId
@@ -49,6 +52,25 @@ contract Stacks is ERC721, ERC2981, Ownable {
 
   function toggleMint(bool _open) public onlyOwner {
     mintOpen = _open;
+  }
+
+  function toggleWlMint(bool _open) public onlyOwner {
+    wlMintOpen = _open;
+  }
+
+  function wlMint() public {
+    require(wlMintOpen, "Minting is not open");
+    WhitelistData.Account memory wlAccount = new WhitelistData().getWhitelistAccount(msg.sender);
+    require(wlAccount.exists, "Address not whitelisted");
+
+    // _tokenId for whitelist is between 0 and 250
+    uint _tokenId = wlAccount.tokenId;
+    require(_tokenId <= maxSupply, "Token ID is too high");
+    require(!tokenMetaDataRecord[_tokenId].minted, "Token has already been minted");
+
+    tokenMinter[_tokenId] = msg.sender;
+    tokenMetaDataRecord[_tokenId] = TokenMetaData(true, block.timestamp);
+    _safeMint(msg.sender, _tokenId);
   }
 
   // Mint token for team members

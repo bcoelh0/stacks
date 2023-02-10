@@ -32,6 +32,10 @@ contract StacksAuctionHouse is Ownable, Stacks {
     startAuction(1);
   }
 
+  function getCurrentWinner() public view returns (address payable) {
+    return auctionWinner[totalAuctions];
+  }
+
   function getCurrentAuction() public view returns (Auction memory) {
     return auctions[totalAuctions];
   }

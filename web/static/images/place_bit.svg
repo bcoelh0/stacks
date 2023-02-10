@@ -1,0 +1,24 @@
+<svg width="344" height="56" viewBox="0 0 344 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="6" y="6" width="332" height="44" fill="#00AC54"/>
+<rect x="3" y="6" width="6" height="44" fill="#008C44"/>
+<rect x="332" y="6" width="9" height="44" fill="#008C44"/>
+<rect x="6" y="3" width="332" height="6" fill="#01C962"/>
+<rect x="6" y="47" width="332" height="6" fill="#004C25"/>
+<rect y="6" width="3" height="44" fill="black"/>
+<rect x="9" y="12" width="3" height="32" fill="white"/>
+<rect x="332" y="12" width="3" height="32" fill="white"/>
+<rect x="341" y="6" width="3" height="44" fill="black"/>
+<rect x="3" y="3" width="3" height="3" fill="black"/>
+<rect x="338" y="3" width="3" height="3" fill="black"/>
+<rect x="335" y="6" width="3" height="3" fill="#E4EAE7"/>
+<rect x="335" y="47" width="3" height="3" fill="#E4EAE7"/>
+<rect x="6" y="6" width="3" height="3" fill="#E4EAE7"/>
+<rect x="6" y="47" width="3" height="3" fill="#E4EAE7"/>
+<rect x="12" y="9" width="320" height="3" fill="white"/>
+<rect x="12" y="44" width="320" height="3" fill="white"/>
+<rect x="338" y="50" width="3" height="3" fill="black"/>
+<rect x="3" y="50" width="3" height="3" fill="black"/>
+<rect x="6" width="332" height="3" fill="black"/>
+<rect x="6" y="53" width="332" height="3" fill="black"/>
+<path d="M122 35H120V33V31V29V27V25V23H122H124H126H128H130V25V27V29V31H128H126H124V33V35H122ZM126 29V27V25H124V27V29H126ZM140 33H142V35H140H138H136H134H132V33V31V29V27V25V23H134H136V25V27V29V31V33H138H140ZM152 35H150V33V31H148V33V35H146H144V33V31V29V27V25V23H146H148H150H152H154V25V27V29V31V33V35H152ZM150 29V27V25H148V27V29H150ZM164 35H162H160H158H156V33V31V29V27V25V23H158H160H162H164H166V25V27H164H162V25H160V27V29V31V33H162V31H164H166V33V35H164ZM176 35H174H172H170H168V33V31V29V27V25V23H170H172H174H176H178V25H176H174H172V27H174H176V29H174H172V31V33H174V31H176H178V33V35H176ZM198 35H196H194H192H190V33V31V29V27V25V23H192H194H196H198H200V25V27H198V29H200V31V33V35H198ZM196 33V31V29H194V31V33H196ZM196 27V25H194V27H196ZM208 35H206H204H202V33H204V31V29V27V25H202V23H204H206H208H210V25H208V27V29V31V33H210V35H208ZM218 35H216H214H212V33V31V29V27V25V23H214H216H218H220H222V25V27V29V31V33H220V35H218ZM218 33V31V29V27V25H216V27V29V31V33H218Z" fill="white"/>
+</svg>
