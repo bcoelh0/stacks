@@ -3442,7 +3442,7 @@
                 }
               ]
             },
-            "name": "abi_encode_t_struct$_Account_$4283_memory_ptr_to_t_struct$_Account_$4283_memory_ptr_fromStack",
+            "name": "abi_encode_t_struct$_Account_$4292_memory_ptr_to_t_struct$_Account_$4292_memory_ptr_fromStack",
             "nodeType": "YulFunctionDefinition",
             "parameters": [
               {
@@ -3532,7 +3532,7 @@
                       }
                     ],
                     "functionName": {
-                      "name": "abi_encode_t_struct$_Account_$4283_memory_ptr_to_t_struct$_Account_$4283_memory_ptr_fromStack",
+                      "name": "abi_encode_t_struct$_Account_$4292_memory_ptr_to_t_struct$_Account_$4292_memory_ptr_fromStack",
                       "nodeType": "YulIdentifier",
                       "src": "6616:93:21"
                     },
@@ -3544,7 +3544,7 @@
                 }
               ]
             },
-            "name": "abi_encode_tuple_t_struct$_Account_$4283_memory_ptr__to_t_struct$_Account_$4283_memory_ptr__fromStack_reversed",
+            "name": "abi_encode_tuple_t_struct$_Account_$4292_memory_ptr__to_t_struct$_Account_$4292_memory_ptr__fromStack_reversed",
             "nodeType": "YulFunctionDefinition",
             "parameters": [
               {
@@ -4866,7 +4866,7 @@
           }
         ]
       },
-      "contents": "{\n\n    function allocate_unbounded() -> memPtr {\n        memPtr := mload(64)\n    }\n\n    function revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() {\n        revert(0, 0)\n    }\n\n    function revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db() {\n        revert(0, 0)\n    }\n\n    function revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d() {\n        revert(0, 0)\n    }\n\n    function round_up_to_mul_of_32(value) -> result {\n        result := and(add(value, 31), not(31))\n    }\n\n    function panic_error_0x41() {\n        mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)\n        mstore(4, 0x41)\n        revert(0, 0x24)\n    }\n\n    function finalize_allocation(memPtr, size) {\n        let newFreePtr := add(memPtr, round_up_to_mul_of_32(size))\n        // protect against overflow\n        if or(gt(newFreePtr, 0xffffffffffffffff), lt(newFreePtr, memPtr)) { panic_error_0x41() }\n        mstore(64, newFreePtr)\n    }\n\n    function allocate_memory(size) -> memPtr {\n        memPtr := allocate_unbounded()\n        finalize_allocation(memPtr, size)\n    }\n\n    function array_allocation_size_t_array$_t_address_$dyn_memory_ptr(length) -> size {\n        // Make sure we can allocate memory without overflow\n        if gt(length, 0xffffffffffffffff) { panic_error_0x41() }\n\n        size := mul(length, 0x20)\n\n        // add length slot\n        size := add(size, 0x20)\n\n    }\n\n    function revert_error_81385d8c0b31fffe14be1da910c8bd3a80be4cfa248e04f42ec0faea3132a8ef() {\n        revert(0, 0)\n    }\n\n    function cleanup_t_uint160(value) -> cleaned {\n        cleaned := and(value, 0xffffffffffffffffffffffffffffffffffffffff)\n    }\n\n    function cleanup_t_address(value) -> cleaned {\n        cleaned := cleanup_t_uint160(value)\n    }\n\n    function validator_revert_t_address(value) {\n        if iszero(eq(value, cleanup_t_address(value))) { revert(0, 0) }\n    }\n\n    function abi_decode_t_address(offset, end) -> value {\n        value := calldataload(offset)\n        validator_revert_t_address(value)\n    }\n\n    // address[]\n    function abi_decode_available_length_t_array$_t_address_$dyn_memory_ptr(offset, length, end) -> array {\n        array := allocate_memory(array_allocation_size_t_array$_t_address_$dyn_memory_ptr(length))\n        let dst := array\n\n        mstore(array, length)\n        dst := add(array, 0x20)\n\n        let srcEnd := add(offset, mul(length, 0x20))\n        if gt(srcEnd, end) {\n            revert_error_81385d8c0b31fffe14be1da910c8bd3a80be4cfa248e04f42ec0faea3132a8ef()\n        }\n        for { let src := offset } lt(src, srcEnd) { src := add(src, 0x20) }\n        {\n\n            let elementPos := src\n\n            mstore(dst, abi_decode_t_address(elementPos, end))\n            dst := add(dst, 0x20)\n        }\n    }\n\n    // address[]\n    function abi_decode_t_array$_t_address_$dyn_memory_ptr(offset, end) -> array {\n        if iszero(slt(add(offset, 0x1f), end)) { revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d() }\n        let length := calldataload(offset)\n        array := abi_decode_available_length_t_array$_t_address_$dyn_memory_ptr(add(offset, 0x20), length, end)\n    }\n\n    function abi_decode_tuple_t_array$_t_address_$dyn_memory_ptr(headStart, dataEnd) -> value0 {\n        if slt(sub(dataEnd, headStart), 32) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }\n\n        {\n\n            let offset := calldataload(add(headStart, 0))\n            if gt(offset, 0xffffffffffffffff) { revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db() }\n\n            value0 := abi_decode_t_array$_t_address_$dyn_memory_ptr(add(headStart, offset), dataEnd)\n        }\n\n    }\n\n    function abi_decode_tuple_t_address(headStart, dataEnd) -> value0 {\n        if slt(sub(dataEnd, headStart), 32) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }\n\n        {\n\n            let offset := 0\n\n            value0 := abi_decode_t_address(add(headStart, offset), dataEnd)\n        }\n\n    }\n\n    function cleanup_t_uint256(value) -> cleaned {\n        cleaned := value\n    }\n\n    function abi_encode_t_uint256_to_t_uint256_fromStack(value, pos) {\n        mstore(pos, cleanup_t_uint256(value))\n    }\n\n    function cleanup_t_bool(value) -> cleaned {\n        cleaned := iszero(iszero(value))\n    }\n\n    function abi_encode_t_bool_to_t_bool_fromStack(value, pos) {\n        mstore(pos, cleanup_t_bool(value))\n    }\n\n    function abi_encode_tuple_t_uint256_t_bool__to_t_uint256_t_bool__fromStack_reversed(headStart , value1, value0) -> tail {\n        tail := add(headStart, 64)\n\n        abi_encode_t_uint256_to_t_uint256_fromStack(value0,  add(headStart, 0))\n\n        abi_encode_t_bool_to_t_bool_fromStack(value1,  add(headStart, 32))\n\n    }\n\n    function validator_revert_t_uint256(value) {\n        if iszero(eq(value, cleanup_t_uint256(value))) { revert(0, 0) }\n    }\n\n    function abi_decode_t_uint256(offset, end) -> value {\n        value := calldataload(offset)\n        validator_revert_t_uint256(value)\n    }\n\n    function abi_decode_tuple_t_addresst_uint256(headStart, dataEnd) -> value0, value1 {\n        if slt(sub(dataEnd, headStart), 64) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }\n\n        {\n\n            let offset := 0\n\n            value0 := abi_decode_t_address(add(headStart, offset), dataEnd)\n        }\n\n        {\n\n            let offset := 32\n\n            value1 := abi_decode_t_uint256(add(headStart, offset), dataEnd)\n        }\n\n    }\n\n    function abi_encode_t_uint256_to_t_uint256(value, pos) {\n        mstore(pos, cleanup_t_uint256(value))\n    }\n\n    function abi_encode_t_bool_to_t_bool(value, pos) {\n        mstore(pos, cleanup_t_bool(value))\n    }\n\n    // struct WhitelistData.Account -> struct WhitelistData.Account\n    function abi_encode_t_struct$_Account_$4283_memory_ptr_to_t_struct$_Account_$4283_memory_ptr_fromStack(value, pos)  {\n        let tail := add(pos, 0x40)\n\n        {\n            // tokenId\n\n            let memberValue0 := mload(add(value, 0x00))\n            abi_encode_t_uint256_to_t_uint256(memberValue0, add(pos, 0x00))\n        }\n\n        {\n            // exists\n\n            let memberValue0 := mload(add(value, 0x20))\n            abi_encode_t_bool_to_t_bool(memberValue0, add(pos, 0x20))\n        }\n\n    }\n\n    function abi_encode_tuple_t_struct$_Account_$4283_memory_ptr__to_t_struct$_Account_$4283_memory_ptr__fromStack_reversed(headStart , value0) -> tail {\n        tail := add(headStart, 64)\n\n        abi_encode_t_struct$_Account_$4283_memory_ptr_to_t_struct$_Account_$4283_memory_ptr_fromStack(value0,  add(headStart, 0))\n\n    }\n\n    function abi_encode_t_address_to_t_address_fromStack(value, pos) {\n        mstore(pos, cleanup_t_address(value))\n    }\n\n    function abi_encode_tuple_t_address__to_t_address__fromStack_reversed(headStart , value0) -> tail {\n        tail := add(headStart, 32)\n\n        abi_encode_t_address_to_t_address_fromStack(value0,  add(headStart, 0))\n\n    }\n\n    function panic_error_0x32() {\n        mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)\n        mstore(4, 0x32)\n        revert(0, 0x24)\n    }\n\n    function panic_error_0x11() {\n        mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)\n        mstore(4, 0x11)\n        revert(0, 0x24)\n    }\n\n    function increment_t_uint256(value) -> ret {\n        value := cleanup_t_uint256(value)\n        if eq(value, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff) { panic_error_0x11() }\n        ret := add(value, 1)\n    }\n\n    function array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, length) -> updated_pos {\n        mstore(pos, length)\n        updated_pos := add(pos, 0x20)\n    }\n\n    function store_literal_in_memory_245f15ff17f551913a7a18385165551503906a406f905ac1c2437281a7cd0cfe(memPtr) {\n\n        mstore(add(memPtr, 0), \"Ownable: new owner is the zero a\")\n\n        mstore(add(memPtr, 32), \"ddress\")\n\n    }\n\n    function abi_encode_t_stringliteral_245f15ff17f551913a7a18385165551503906a406f905ac1c2437281a7cd0cfe_to_t_string_memory_ptr_fromStack(pos) -> end {\n        pos := array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, 38)\n        store_literal_in_memory_245f15ff17f551913a7a18385165551503906a406f905ac1c2437281a7cd0cfe(pos)\n        end := add(pos, 64)\n    }\n\n    function abi_encode_tuple_t_stringliteral_245f15ff17f551913a7a18385165551503906a406f905ac1c2437281a7cd0cfe__to_t_string_memory_ptr__fromStack_reversed(headStart ) -> tail {\n        tail := add(headStart, 32)\n\n        mstore(add(headStart, 0), sub(tail, headStart))\n        tail := abi_encode_t_stringliteral_245f15ff17f551913a7a18385165551503906a406f905ac1c2437281a7cd0cfe_to_t_string_memory_ptr_fromStack( tail)\n\n    }\n\n    function store_literal_in_memory_9924ebdf1add33d25d4ef888e16131f0a5687b0580a36c21b5c301a6c462effe(memPtr) {\n\n        mstore(add(memPtr, 0), \"Ownable: caller is not the owner\")\n\n    }\n\n    function abi_encode_t_stringliteral_9924ebdf1add33d25d4ef888e16131f0a5687b0580a36c21b5c301a6c462effe_to_t_string_memory_ptr_fromStack(pos) -> end {\n        pos := array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, 32)\n        store_literal_in_memory_9924ebdf1add33d25d4ef888e16131f0a5687b0580a36c21b5c301a6c462effe(pos)\n        end := add(pos, 32)\n    }\n\n    function abi_encode_tuple_t_stringliteral_9924ebdf1add33d25d4ef888e16131f0a5687b0580a36c21b5c301a6c462effe__to_t_string_memory_ptr__fromStack_reversed(headStart ) -> tail {\n        tail := add(headStart, 32)\n\n        mstore(add(headStart, 0), sub(tail, headStart))\n        tail := abi_encode_t_stringliteral_9924ebdf1add33d25d4ef888e16131f0a5687b0580a36c21b5c301a6c462effe_to_t_string_memory_ptr_fromStack( tail)\n\n    }\n\n}\n",
+      "contents": "{\n\n    function allocate_unbounded() -> memPtr {\n        memPtr := mload(64)\n    }\n\n    function revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() {\n        revert(0, 0)\n    }\n\n    function revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db() {\n        revert(0, 0)\n    }\n\n    function revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d() {\n        revert(0, 0)\n    }\n\n    function round_up_to_mul_of_32(value) -> result {\n        result := and(add(value, 31), not(31))\n    }\n\n    function panic_error_0x41() {\n        mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)\n        mstore(4, 0x41)\n        revert(0, 0x24)\n    }\n\n    function finalize_allocation(memPtr, size) {\n        let newFreePtr := add(memPtr, round_up_to_mul_of_32(size))\n        // protect against overflow\n        if or(gt(newFreePtr, 0xffffffffffffffff), lt(newFreePtr, memPtr)) { panic_error_0x41() }\n        mstore(64, newFreePtr)\n    }\n\n    function allocate_memory(size) -> memPtr {\n        memPtr := allocate_unbounded()\n        finalize_allocation(memPtr, size)\n    }\n\n    function array_allocation_size_t_array$_t_address_$dyn_memory_ptr(length) -> size {\n        // Make sure we can allocate memory without overflow\n        if gt(length, 0xffffffffffffffff) { panic_error_0x41() }\n\n        size := mul(length, 0x20)\n\n        // add length slot\n        size := add(size, 0x20)\n\n    }\n\n    function revert_error_81385d8c0b31fffe14be1da910c8bd3a80be4cfa248e04f42ec0faea3132a8ef() {\n        revert(0, 0)\n    }\n\n    function cleanup_t_uint160(value) -> cleaned {\n        cleaned := and(value, 0xffffffffffffffffffffffffffffffffffffffff)\n    }\n\n    function cleanup_t_address(value) -> cleaned {\n        cleaned := cleanup_t_uint160(value)\n    }\n\n    function validator_revert_t_address(value) {\n        if iszero(eq(value, cleanup_t_address(value))) { revert(0, 0) }\n    }\n\n    function abi_decode_t_address(offset, end) -> value {\n        value := calldataload(offset)\n        validator_revert_t_address(value)\n    }\n\n    // address[]\n    function abi_decode_available_length_t_array$_t_address_$dyn_memory_ptr(offset, length, end) -> array {\n        array := allocate_memory(array_allocation_size_t_array$_t_address_$dyn_memory_ptr(length))\n        let dst := array\n\n        mstore(array, length)\n        dst := add(array, 0x20)\n\n        let srcEnd := add(offset, mul(length, 0x20))\n        if gt(srcEnd, end) {\n            revert_error_81385d8c0b31fffe14be1da910c8bd3a80be4cfa248e04f42ec0faea3132a8ef()\n        }\n        for { let src := offset } lt(src, srcEnd) { src := add(src, 0x20) }\n        {\n\n            let elementPos := src\n\n            mstore(dst, abi_decode_t_address(elementPos, end))\n            dst := add(dst, 0x20)\n        }\n    }\n\n    // address[]\n    function abi_decode_t_array$_t_address_$dyn_memory_ptr(offset, end) -> array {\n        if iszero(slt(add(offset, 0x1f), end)) { revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d() }\n        let length := calldataload(offset)\n        array := abi_decode_available_length_t_array$_t_address_$dyn_memory_ptr(add(offset, 0x20), length, end)\n    }\n\n    function abi_decode_tuple_t_array$_t_address_$dyn_memory_ptr(headStart, dataEnd) -> value0 {\n        if slt(sub(dataEnd, headStart), 32) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }\n\n        {\n\n            let offset := calldataload(add(headStart, 0))\n            if gt(offset, 0xffffffffffffffff) { revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db() }\n\n            value0 := abi_decode_t_array$_t_address_$dyn_memory_ptr(add(headStart, offset), dataEnd)\n        }\n\n    }\n\n    function abi_decode_tuple_t_address(headStart, dataEnd) -> value0 {\n        if slt(sub(dataEnd, headStart), 32) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }\n\n        {\n\n            let offset := 0\n\n            value0 := abi_decode_t_address(add(headStart, offset), dataEnd)\n        }\n\n    }\n\n    function cleanup_t_uint256(value) -> cleaned {\n        cleaned := value\n    }\n\n    function abi_encode_t_uint256_to_t_uint256_fromStack(value, pos) {\n        mstore(pos, cleanup_t_uint256(value))\n    }\n\n    function cleanup_t_bool(value) -> cleaned {\n        cleaned := iszero(iszero(value))\n    }\n\n    function abi_encode_t_bool_to_t_bool_fromStack(value, pos) {\n        mstore(pos, cleanup_t_bool(value))\n    }\n\n    function abi_encode_tuple_t_uint256_t_bool__to_t_uint256_t_bool__fromStack_reversed(headStart , value1, value0) -> tail {\n        tail := add(headStart, 64)\n\n        abi_encode_t_uint256_to_t_uint256_fromStack(value0,  add(headStart, 0))\n\n        abi_encode_t_bool_to_t_bool_fromStack(value1,  add(headStart, 32))\n\n    }\n\n    function validator_revert_t_uint256(value) {\n        if iszero(eq(value, cleanup_t_uint256(value))) { revert(0, 0) }\n    }\n\n    function abi_decode_t_uint256(offset, end) -> value {\n        value := calldataload(offset)\n        validator_revert_t_uint256(value)\n    }\n\n    function abi_decode_tuple_t_addresst_uint256(headStart, dataEnd) -> value0, value1 {\n        if slt(sub(dataEnd, headStart), 64) { revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b() }\n\n        {\n\n            let offset := 0\n\n            value0 := abi_decode_t_address(add(headStart, offset), dataEnd)\n        }\n\n        {\n\n            let offset := 32\n\n            value1 := abi_decode_t_uint256(add(headStart, offset), dataEnd)\n        }\n\n    }\n\n    function abi_encode_t_uint256_to_t_uint256(value, pos) {\n        mstore(pos, cleanup_t_uint256(value))\n    }\n\n    function abi_encode_t_bool_to_t_bool(value, pos) {\n        mstore(pos, cleanup_t_bool(value))\n    }\n\n    // struct WhitelistData.Account -> struct WhitelistData.Account\n    function abi_encode_t_struct$_Account_$4292_memory_ptr_to_t_struct$_Account_$4292_memory_ptr_fromStack(value, pos)  {\n        let tail := add(pos, 0x40)\n\n        {\n            // tokenId\n\n            let memberValue0 := mload(add(value, 0x00))\n            abi_encode_t_uint256_to_t_uint256(memberValue0, add(pos, 0x00))\n        }\n\n        {\n            // exists\n\n            let memberValue0 := mload(add(value, 0x20))\n            abi_encode_t_bool_to_t_bool(memberValue0, add(pos, 0x20))\n        }\n\n    }\n\n    function abi_encode_tuple_t_struct$_Account_$4292_memory_ptr__to_t_struct$_Account_$4292_memory_ptr__fromStack_reversed(headStart , value0) -> tail {\n        tail := add(headStart, 64)\n\n        abi_encode_t_struct$_Account_$4292_memory_ptr_to_t_struct$_Account_$4292_memory_ptr_fromStack(value0,  add(headStart, 0))\n\n    }\n\n    function abi_encode_t_address_to_t_address_fromStack(value, pos) {\n        mstore(pos, cleanup_t_address(value))\n    }\n\n    function abi_encode_tuple_t_address__to_t_address__fromStack_reversed(headStart , value0) -> tail {\n        tail := add(headStart, 32)\n\n        abi_encode_t_address_to_t_address_fromStack(value0,  add(headStart, 0))\n\n    }\n\n    function panic_error_0x32() {\n        mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)\n        mstore(4, 0x32)\n        revert(0, 0x24)\n    }\n\n    function panic_error_0x11() {\n        mstore(0, 35408467139433450592217433187231851964531694900788300625387963629091585785856)\n        mstore(4, 0x11)\n        revert(0, 0x24)\n    }\n\n    function increment_t_uint256(value) -> ret {\n        value := cleanup_t_uint256(value)\n        if eq(value, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff) { panic_error_0x11() }\n        ret := add(value, 1)\n    }\n\n    function array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, length) -> updated_pos {\n        mstore(pos, length)\n        updated_pos := add(pos, 0x20)\n    }\n\n    function store_literal_in_memory_245f15ff17f551913a7a18385165551503906a406f905ac1c2437281a7cd0cfe(memPtr) {\n\n        mstore(add(memPtr, 0), \"Ownable: new owner is the zero a\")\n\n        mstore(add(memPtr, 32), \"ddress\")\n\n    }\n\n    function abi_encode_t_stringliteral_245f15ff17f551913a7a18385165551503906a406f905ac1c2437281a7cd0cfe_to_t_string_memory_ptr_fromStack(pos) -> end {\n        pos := array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, 38)\n        store_literal_in_memory_245f15ff17f551913a7a18385165551503906a406f905ac1c2437281a7cd0cfe(pos)\n        end := add(pos, 64)\n    }\n\n    function abi_encode_tuple_t_stringliteral_245f15ff17f551913a7a18385165551503906a406f905ac1c2437281a7cd0cfe__to_t_string_memory_ptr__fromStack_reversed(headStart ) -> tail {\n        tail := add(headStart, 32)\n\n        mstore(add(headStart, 0), sub(tail, headStart))\n        tail := abi_encode_t_stringliteral_245f15ff17f551913a7a18385165551503906a406f905ac1c2437281a7cd0cfe_to_t_string_memory_ptr_fromStack( tail)\n\n    }\n\n    function store_literal_in_memory_9924ebdf1add33d25d4ef888e16131f0a5687b0580a36c21b5c301a6c462effe(memPtr) {\n\n        mstore(add(memPtr, 0), \"Ownable: caller is not the owner\")\n\n    }\n\n    function abi_encode_t_stringliteral_9924ebdf1add33d25d4ef888e16131f0a5687b0580a36c21b5c301a6c462effe_to_t_string_memory_ptr_fromStack(pos) -> end {\n        pos := array_storeLengthForEncoding_t_string_memory_ptr_fromStack(pos, 32)\n        store_literal_in_memory_9924ebdf1add33d25d4ef888e16131f0a5687b0580a36c21b5c301a6c462effe(pos)\n        end := add(pos, 32)\n    }\n\n    function abi_encode_tuple_t_stringliteral_9924ebdf1add33d25d4ef888e16131f0a5687b0580a36c21b5c301a6c462effe__to_t_string_memory_ptr__fromStack_reversed(headStart ) -> tail {\n        tail := add(headStart, 32)\n\n        mstore(add(headStart, 0), sub(tail, headStart))\n        tail := abi_encode_t_stringliteral_9924ebdf1add33d25d4ef888e16131f0a5687b0580a36c21b5c301a6c462effe_to_t_string_memory_ptr_fromStack( tail)\n\n    }\n\n}\n",
       "id": 21,
       "language": "Yul",
       "name": "#utility.yul"
@@ -4895,15 +4895,15 @@
         112
       ],
       "WhitelistData": [
-        4354
+        4363
       ]
     },
-    "id": 4355,
+    "id": 4364,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4274,
+        "id": 4283,
         "literals": [
           "solidity",
           ">=",
@@ -4919,10 +4919,10 @@
       {
         "absolutePath": "@openzeppelin/contracts/access/Ownable.sol",
         "file": "@openzeppelin/contracts/access/Ownable.sol",
-        "id": 4275,
+        "id": 4284,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 4355,
+        "scope": 4364,
         "sourceUnit": 113,
         "src": "66:52:19",
         "symbolAliases": [],
@@ -4931,10 +4931,10 @@
       {
         "absolutePath": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         "file": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-        "id": 4276,
+        "id": 4285,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 4355,
+        "scope": 4364,
         "sourceUnit": 719,
         "src": "119:55:19",
         "symbolAliases": [],
@@ -4945,7 +4945,7 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 4277,
+              "id": 4286,
               "name": "Ownable",
               "nameLocations": [
                 "202:7:19"
@@ -4954,7 +4954,7 @@
               "referencedDeclaration": 112,
               "src": "202:7:19"
             },
-            "id": 4278,
+            "id": 4287,
             "nodeType": "InheritanceSpecifier",
             "src": "202:7:19"
           }
@@ -4963,9 +4963,9 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 4354,
+        "id": 4363,
         "linearizedBaseContracts": [
-          4354,
+          4363,
           112,
           2477
         ],
@@ -4975,16 +4975,16 @@
         "nodes": [
           {
             "canonicalName": "WhitelistData.Account",
-            "id": 4283,
+            "id": 4292,
             "members": [
               {
                 "constant": false,
-                "id": 4280,
+                "id": 4289,
                 "mutability": "mutable",
                 "name": "tokenId",
                 "nameLocation": "240:7:19",
                 "nodeType": "VariableDeclaration",
-                "scope": 4283,
+                "scope": 4292,
                 "src": "235:12:19",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -4993,7 +4993,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 4279,
+                  "id": 4288,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "235:4:19",
@@ -5006,12 +5006,12 @@
               },
               {
                 "constant": false,
-                "id": 4282,
+                "id": 4291,
                 "mutability": "mutable",
                 "name": "exists",
                 "nameLocation": "258:6:19",
                 "nodeType": "VariableDeclaration",
-                "scope": 4283,
+                "scope": 4292,
                 "src": "253:11:19",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -5020,7 +5020,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 4281,
+                  "id": 4290,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "253:4:19",
@@ -5035,30 +5035,30 @@
             "name": "Account",
             "nameLocation": "221:7:19",
             "nodeType": "StructDefinition",
-            "scope": 4354,
+            "scope": 4363,
             "src": "214:55:19",
             "visibility": "public"
           },
           {
             "constant": false,
             "functionSelector": "5e5c06e2",
-            "id": 4288,
+            "id": 4297,
             "mutability": "mutable",
             "name": "accounts",
             "nameLocation": "308:8:19",
             "nodeType": "VariableDeclaration",
-            "scope": 4354,
+            "scope": 4363,
             "src": "273:43:19",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Account_$4283_storage_$",
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Account_$4292_storage_$",
               "typeString": "mapping(address => struct WhitelistData.Account)"
             },
             "typeName": {
-              "id": 4287,
+              "id": 4296,
               "keyType": {
-                "id": 4284,
+                "id": 4293,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
                 "src": "281:7:19",
@@ -5070,26 +5070,26 @@
               "nodeType": "Mapping",
               "src": "273:27:19",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Account_$4283_storage_$",
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Account_$4292_storage_$",
                 "typeString": "mapping(address => struct WhitelistData.Account)"
               },
               "valueType": {
-                "id": 4286,
+                "id": 4295,
                 "nodeType": "UserDefinedTypeName",
                 "pathNode": {
-                  "id": 4285,
+                  "id": 4294,
                   "name": "Account",
                   "nameLocations": [
                     "292:7:19"
                   ],
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 4283,
+                  "referencedDeclaration": 4292,
                   "src": "292:7:19"
                 },
-                "referencedDeclaration": 4283,
+                "referencedDeclaration": 4292,
                 "src": "292:7:19",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Account_$4283_storage_ptr",
+                  "typeIdentifier": "t_struct$_Account_$4292_storage_ptr",
                   "typeString": "struct WhitelistData.Account"
                 }
               }
@@ -5098,57 +5098,57 @@
           },
           {
             "body": {
-              "id": 4320,
+              "id": 4329,
               "nodeType": "Block",
               "src": "400:109:19",
               "statements": [
                 {
                   "body": {
-                    "id": 4318,
+                    "id": 4327,
                     "nodeType": "Block",
                     "src": "449:56:19",
                     "statements": [
                       {
                         "expression": {
-                          "id": 4316,
+                          "id": 4325,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "leftHandSide": {
                             "baseExpression": {
-                              "id": 4307,
+                              "id": 4316,
                               "name": "accounts",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4288,
+                              "referencedDeclaration": 4297,
                               "src": "457:8:19",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Account_$4283_storage_$",
+                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Account_$4292_storage_$",
                                 "typeString": "mapping(address => struct WhitelistData.Account storage ref)"
                               }
                             },
-                            "id": 4311,
+                            "id": 4320,
                             "indexExpression": {
                               "baseExpression": {
-                                "id": 4308,
+                                "id": 4317,
                                 "name": "_accounts",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 4291,
+                                "referencedDeclaration": 4300,
                                 "src": "466:9:19",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 4310,
+                              "id": 4319,
                               "indexExpression": {
-                                "id": 4309,
+                                "id": 4318,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 4297,
+                                "referencedDeclaration": 4306,
                                 "src": "476:1:19",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -5173,7 +5173,7 @@
                             "nodeType": "IndexAccess",
                             "src": "457:22:19",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Account_$4283_storage",
+                              "typeIdentifier": "t_struct$_Account_$4292_storage",
                               "typeString": "struct WhitelistData.Account storage ref"
                             }
                           },
@@ -5182,11 +5182,11 @@
                           "rightHandSide": {
                             "arguments": [
                               {
-                                "id": 4313,
+                                "id": 4322,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 4297,
+                                "referencedDeclaration": 4306,
                                 "src": "490:1:19",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -5195,7 +5195,7 @@
                               },
                               {
                                 "hexValue": "74727565",
-                                "id": 4314,
+                                "id": 4323,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": true,
@@ -5221,18 +5221,18 @@
                                   "typeString": "bool"
                                 }
                               ],
-                              "id": 4312,
+                              "id": 4321,
                               "name": "Account",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4283,
+                              "referencedDeclaration": 4292,
                               "src": "482:7:19",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_struct$_Account_$4283_storage_ptr_$",
+                                "typeIdentifier": "t_type$_t_struct$_Account_$4292_storage_ptr_$",
                                 "typeString": "type(struct WhitelistData.Account storage pointer)"
                               }
                             },
-                            "id": 4315,
+                            "id": 4324,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -5244,17 +5244,17 @@
                             "src": "482:16:19",
                             "tryCall": false,
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Account_$4283_memory_ptr",
+                              "typeIdentifier": "t_struct$_Account_$4292_memory_ptr",
                               "typeString": "struct WhitelistData.Account memory"
                             }
                           },
                           "src": "457:41:19",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Account_$4283_storage",
+                            "typeIdentifier": "t_struct$_Account_$4292_storage",
                             "typeString": "struct WhitelistData.Account storage ref"
                           }
                         },
-                        "id": 4317,
+                        "id": 4326,
                         "nodeType": "ExpressionStatement",
                         "src": "457:41:19"
                       }
@@ -5265,17 +5265,17 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 4303,
+                    "id": 4312,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
-                      "id": 4300,
+                      "id": 4309,
                       "name": "i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4297,
+                      "referencedDeclaration": 4306,
                       "src": "422:1:19",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -5286,18 +5286,18 @@
                     "operator": "<",
                     "rightExpression": {
                       "expression": {
-                        "id": 4301,
+                        "id": 4310,
                         "name": "_accounts",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4291,
+                        "referencedDeclaration": 4300,
                         "src": "426:9:19",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                           "typeString": "address[] memory"
                         }
                       },
-                      "id": 4302,
+                      "id": 4311,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -5317,20 +5317,20 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 4319,
+                  "id": 4328,
                   "initializationExpression": {
                     "assignments": [
-                      4297
+                      4306
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 4297,
+                        "id": 4306,
                         "mutability": "mutable",
                         "name": "i",
                         "nameLocation": "415:1:19",
                         "nodeType": "VariableDeclaration",
-                        "scope": 4319,
+                        "scope": 4328,
                         "src": "410:6:19",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -5339,7 +5339,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 4296,
+                          "id": 4305,
                           "name": "uint",
                           "nodeType": "ElementaryTypeName",
                           "src": "410:4:19",
@@ -5351,10 +5351,10 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 4299,
+                    "id": 4308,
                     "initialValue": {
                       "hexValue": "30",
-                      "id": 4298,
+                      "id": 4307,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -5373,7 +5373,7 @@
                   },
                   "loopExpression": {
                     "expression": {
-                      "id": 4305,
+                      "id": 4314,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -5383,11 +5383,11 @@
                       "prefix": false,
                       "src": "444:3:19",
                       "subExpression": {
-                        "id": 4304,
+                        "id": 4313,
                         "name": "i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4297,
+                        "referencedDeclaration": 4306,
                         "src": "444:1:19",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -5399,7 +5399,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 4306,
+                    "id": 4315,
                     "nodeType": "ExpressionStatement",
                     "src": "444:3:19"
                   },
@@ -5409,15 +5409,15 @@
               ]
             },
             "functionSelector": "341cd3ab",
-            "id": 4321,
+            "id": 4330,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 4294,
+                "id": 4303,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 4293,
+                  "id": 4302,
                   "name": "onlyOwner",
                   "nameLocations": [
                     "390:9:19"
@@ -5434,17 +5434,17 @@
             "nameLocation": "330:24:19",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4292,
+              "id": 4301,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4291,
+                  "id": 4300,
                   "mutability": "mutable",
                   "name": "_accounts",
                   "nameLocation": "372:9:19",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4321,
+                  "scope": 4330,
                   "src": "355:26:19",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -5454,7 +5454,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 4289,
+                      "id": 4298,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "355:7:19",
@@ -5464,7 +5464,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 4290,
+                    "id": 4299,
                     "nodeType": "ArrayTypeName",
                     "src": "355:9:19",
                     "typeDescriptions": {
@@ -5478,12 +5478,12 @@
               "src": "354:28:19"
             },
             "returnParameters": {
-              "id": 4295,
+              "id": 4304,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "400:0:19"
             },
-            "scope": 4354,
+            "scope": 4363,
             "src": "321:188:19",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -5491,37 +5491,37 @@
           },
           {
             "body": {
-              "id": 4339,
+              "id": 4348,
               "nodeType": "Block",
               "src": "592:55:19",
               "statements": [
                 {
                   "expression": {
-                    "id": 4337,
+                    "id": 4346,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 4330,
+                        "id": 4339,
                         "name": "accounts",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4288,
+                        "referencedDeclaration": 4297,
                         "src": "598:8:19",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Account_$4283_storage_$",
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Account_$4292_storage_$",
                           "typeString": "mapping(address => struct WhitelistData.Account storage ref)"
                         }
                       },
-                      "id": 4332,
+                      "id": 4341,
                       "indexExpression": {
-                        "id": 4331,
+                        "id": 4340,
                         "name": "_account",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4323,
+                        "referencedDeclaration": 4332,
                         "src": "607:8:19",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -5535,7 +5535,7 @@
                       "nodeType": "IndexAccess",
                       "src": "598:18:19",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Account_$4283_storage",
+                        "typeIdentifier": "t_struct$_Account_$4292_storage",
                         "typeString": "struct WhitelistData.Account storage ref"
                       }
                     },
@@ -5544,11 +5544,11 @@
                     "rightHandSide": {
                       "arguments": [
                         {
-                          "id": 4334,
+                          "id": 4343,
                           "name": "_tokenId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4325,
+                          "referencedDeclaration": 4334,
                           "src": "627:8:19",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -5557,7 +5557,7 @@
                         },
                         {
                           "hexValue": "74727565",
-                          "id": 4335,
+                          "id": 4344,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -5583,18 +5583,18 @@
                             "typeString": "bool"
                           }
                         ],
-                        "id": 4333,
+                        "id": 4342,
                         "name": "Account",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4283,
+                        "referencedDeclaration": 4292,
                         "src": "619:7:19",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_struct$_Account_$4283_storage_ptr_$",
+                          "typeIdentifier": "t_type$_t_struct$_Account_$4292_storage_ptr_$",
                           "typeString": "type(struct WhitelistData.Account storage pointer)"
                         }
                       },
-                      "id": 4336,
+                      "id": 4345,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -5606,32 +5606,32 @@
                       "src": "619:23:19",
                       "tryCall": false,
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Account_$4283_memory_ptr",
+                        "typeIdentifier": "t_struct$_Account_$4292_memory_ptr",
                         "typeString": "struct WhitelistData.Account memory"
                       }
                     },
                     "src": "598:44:19",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Account_$4283_storage",
+                      "typeIdentifier": "t_struct$_Account_$4292_storage",
                       "typeString": "struct WhitelistData.Account storage ref"
                     }
                   },
-                  "id": 4338,
+                  "id": 4347,
                   "nodeType": "ExpressionStatement",
                   "src": "598:44:19"
                 }
               ]
             },
             "functionSelector": "60b0d313",
-            "id": 4340,
+            "id": 4349,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 4328,
+                "id": 4337,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 4327,
+                  "id": 4336,
                   "name": "onlyOwner",
                   "nameLocations": [
                     "582:9:19"
@@ -5648,17 +5648,17 @@
             "nameLocation": "522:19:19",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4326,
+              "id": 4335,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4323,
+                  "id": 4332,
                   "mutability": "mutable",
                   "name": "_account",
                   "nameLocation": "550:8:19",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4340,
+                  "scope": 4349,
                   "src": "542:16:19",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5667,7 +5667,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4322,
+                    "id": 4331,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "542:7:19",
@@ -5681,12 +5681,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 4325,
+                  "id": 4334,
                   "mutability": "mutable",
                   "name": "_tokenId",
                   "nameLocation": "565:8:19",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4340,
+                  "scope": 4349,
                   "src": "560:13:19",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5695,7 +5695,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4324,
+                    "id": 4333,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "560:4:19",
@@ -5710,12 +5710,12 @@
               "src": "541:33:19"
             },
             "returnParameters": {
-              "id": 4329,
+              "id": 4338,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "592:0:19"
             },
-            "scope": 4354,
+            "scope": 4363,
             "src": "513:134:19",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -5723,31 +5723,31 @@
           },
           {
             "body": {
-              "id": 4352,
+              "id": 4361,
               "nodeType": "Block",
               "src": "735:36:19",
               "statements": [
                 {
                   "expression": {
                     "baseExpression": {
-                      "id": 4348,
+                      "id": 4357,
                       "name": "accounts",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4288,
+                      "referencedDeclaration": 4297,
                       "src": "748:8:19",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Account_$4283_storage_$",
+                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Account_$4292_storage_$",
                         "typeString": "mapping(address => struct WhitelistData.Account storage ref)"
                       }
                     },
-                    "id": 4350,
+                    "id": 4359,
                     "indexExpression": {
-                      "id": 4349,
+                      "id": 4358,
                       "name": "_account",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4342,
+                      "referencedDeclaration": 4351,
                       "src": "757:8:19",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -5761,19 +5761,19 @@
                     "nodeType": "IndexAccess",
                     "src": "748:18:19",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Account_$4283_storage",
+                      "typeIdentifier": "t_struct$_Account_$4292_storage",
                       "typeString": "struct WhitelistData.Account storage ref"
                     }
                   },
-                  "functionReturnParameters": 4347,
-                  "id": 4351,
+                  "functionReturnParameters": 4356,
+                  "id": 4360,
                   "nodeType": "Return",
                   "src": "741:25:19"
                 }
               ]
             },
             "functionSelector": "7553e639",
-            "id": 4353,
+            "id": 4362,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -5781,17 +5781,17 @@
             "nameLocation": "660:19:19",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4343,
+              "id": 4352,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4342,
+                  "id": 4351,
                   "mutability": "mutable",
                   "name": "_account",
                   "nameLocation": "688:8:19",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4353,
+                  "scope": 4362,
                   "src": "680:16:19",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5800,7 +5800,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4341,
+                    "id": 4350,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "680:7:19",
@@ -5816,41 +5816,41 @@
               "src": "679:18:19"
             },
             "returnParameters": {
-              "id": 4347,
+              "id": 4356,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4346,
+                  "id": 4355,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4353,
+                  "scope": 4362,
                   "src": "719:14:19",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Account_$4283_memory_ptr",
+                    "typeIdentifier": "t_struct$_Account_$4292_memory_ptr",
                     "typeString": "struct WhitelistData.Account"
                   },
                   "typeName": {
-                    "id": 4345,
+                    "id": 4354,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 4344,
+                      "id": 4353,
                       "name": "Account",
                       "nameLocations": [
                         "719:7:19"
                       ],
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 4283,
+                      "referencedDeclaration": 4292,
                       "src": "719:7:19"
                     },
-                    "referencedDeclaration": 4283,
+                    "referencedDeclaration": 4292,
                     "src": "719:7:19",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Account_$4283_storage_ptr",
+                      "typeIdentifier": "t_struct$_Account_$4292_storage_ptr",
                       "typeString": "struct WhitelistData.Account"
                     }
                   },
@@ -5859,14 +5859,14 @@
               ],
               "src": "718:16:19"
             },
-            "scope": 4354,
+            "scope": 4363,
             "src": "651:120:19",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 4355,
+        "scope": 4364,
         "src": "176:597:19",
         "usedErrors": []
       }
@@ -5879,7 +5879,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.10",
-  "updatedAt": "2023-02-08T17:40:23.978Z",
+  "updatedAt": "2023-02-10T10:10:29.848Z",
   "devdoc": {
     "kind": "dev",
     "methods": {

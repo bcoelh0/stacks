@@ -16,25 +16,14 @@ ReadAuction = {
   },
   load: async () => {
     await ReadAuction.loadWeb3()
-    console.log('loading done!')
+    console.log('Read - loading done!')
   },
   loadContract: async () => {
     const StacksAuctionHouse = await $.getJSON('contracts/StacksAuctionHouse.json')
-    const { chainId } = await ReadAuction.provider.getNetwork()
+    let { chainId } = await ReadAuction.provider.getNetwork()
+    if (chainId == 1337) { chainId = 5777 }
 
-    let auctionAddress, stacksAddress
-    if(chainId == 42161) {
-      // mainnet
-      auctionAddress = '0x5d62e083A83d561685c4fc156C8590B262e7c88a'
-    }
-    else if(chainId == 421613) {
-      // testnet
-      auctionAddress = '0x5d62e083A83d561685c4fc156C8590B262e7c88a'
-    }
-    else {
-      auctionAddress = '0xc277371e1fAc271aFb64A59b7F834186100d2248'
-      stacksAddress = '0xc5914A5a4903C2A5fe22530eA78e6fD60406Bfc5'
-    }
+    let auctionAddress = StacksAuctionHouse['networks'][chainId.toString()]['address']
 
     try {
       // Init contracts
@@ -45,7 +34,7 @@ ReadAuction = {
     }
   },
   loadWeb3: async () => {
-    let url = 'http://localhost:8545'
+    let url = 'http://127.0.0.1:8545'
     // let url = 'https://goerli-rollup.arbitrum.io/rpc'
     // let url = 'https://arbitrum.public-rpc.com'
     ReadAuction.provider = new ethers.providers.JsonRpcProvider(url)
@@ -63,7 +52,6 @@ ReadAuction = {
     let currentAuctionEndTime = currentAuction.endTime.toNumber()
 
     let currentWinner = await ReadAuction.auction.getCurrentWinner()
-    console.log(currentWinner.toString())
 
     if(currentWinner.toString() == '0x0000000000000000000000000000000000000000'){
       $('#auction-bidder').html('No bids yet')
@@ -76,7 +64,7 @@ ReadAuction = {
     let endDate = new Date(currentAuctionEndTime * 1000)
 
     $('#auction-date').html(startDate.getDate() + ' ' + monthNames[startDate.getMonth()])
-    $('#auction-price').html(currentAuctionPrice)
+    $('#auction-price').html(Math.round(currentAuctionPrice, 2))
     $('#auction-end-date').html(endDate.getDate() + ' ' + monthNames[endDate.getMonth()] + ' @ 00:00 GMT')
     $('#countdown').attr('data-date', currentAuctionEndTime)
     let nextBid
@@ -84,10 +72,9 @@ ReadAuction = {
       nextBid = 0.01
     }
     else {
-      nextBid = currentAuctionPrice.toNumber() + 0.01
+      nextBid = parseFloat(currentAuctionPrice) + 0.01
     }
     $('#bid-amount').attr('placeholder', nextBid + ' ETH or more')
-
 
     return true
   }

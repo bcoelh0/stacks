@@ -1,33 +1,31 @@
 Main = {
   loading: false,
   contracts: {},
-  // toEth: (n) => {
-  //   return n / 1e6
-  // },
-  // toWei: (n) => {
-  //   return n * 1e6
-  // },
-  // toCurrency: (n) => {
-  //   let val = n.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-  //   return val.substring(1, val.length)
-  // },
+  toEth: (n) => {
+    return n / 1e18
+  },
+  toWei: (n) => {
+    return n * 1e18
+  },
+  walletFormat: (address) => {
+    return address.substring(0, 6) + '...' + address.substring(address.length - 4, address.length)
+  },
   load: async () => {
     $walletBtn = $('#wallet')
     Main.toggleLoadingScreen(true)
-    let available = await Main.loadWeb3(true)
-    console.log(available)
+    let available = await Main.loadWeb3()
     if(!available) {
       $('#no-mm').show()
     }
 
     $walletBtn.on('click', async () => {
-      await Main.loadWeb3(false)
+      await Main.loadWeb3()
     })
     await Main.setupMetamaskEvents()
-    await Main.setupClickBuySpot()
+    await Main.setupClickButtons()
 
     await Main.toggleLoadingScreen(false)
-    console.log('loading done!')
+    console.log('Write - loading done!')
   },
   toggleLoadingScreen: async (load) => {
     if(load) {
@@ -51,58 +49,48 @@ Main = {
     });
   },
   loadContract: async () => {
-    const usdcArtifact = await $.getJSON('contracts/usdc.json')
-    const wlArtifact = await $.getJSON('contracts/whitelist-stacks.json')
-    const { chainId } = await Main.provider.getNetwork()
+    const StacksAuctionHouse = await $.getJSON('contracts/StacksAuctionHouse.json')
+    const Stacks = await $.getJSON('contracts/Stacks.json')
+    let { chainId } = await Main.provider.getNetwork()
+    if (chainId == 1337) { chainId = 5777 }
 
-    let usdcAddress, wlAddress
-    if(chainId == 1) {
-      // mainnet
-      usdcAddress = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-      wlAddress = '0x8cb951535452bc15763e59b9e5ef7048c8a49e20'
-    }
-    else if(chainId == 5) {
-      // goerli
-      usdcAddress = '0xe56B86e8f3DADAE9c48a0491E53dE75B4918BF93'
-      wlAddress = '0x13183CAD4552725ab8Cc49df2a9D77e81Cc0750D'
-    }
-    else {
-      // unsupported network
-      alert('Unsupported network. Please change network to Ethereum Mainnet')
-      $('.loading').hide()
-      $('#wrong-network').show()
-
-      return false
-    }
+    let auctionAddress = StacksAuctionHouse['networks'][chainId.toString()]['address']
+    let stacksAddress = Stacks['networks'][chainId.toString()]['address']
 
     try {
       // Init contracts
-      Main.usdc = new ethers.Contract(usdcAddress, usdcArtifact["abi"], Main.signer)
-      Main.whitelist = new ethers.Contract(wlAddress, wlArtifact["abi"], Main.signer)
+      Main.auction = new ethers.Contract(auctionAddress, StacksAuctionHouse["abi"], Main.signer)
+      Main.stacks = new ethers.Contract(stacksAddress, Stacks["abi"], Main.signer)
     }
     catch {
       console.log('error loading contracts')
     }
     return true
   },
-
-  loadWeb3: async (firstLoad) => {
+  loadWeb3: async () => {
     if(typeof(ethereum) === 'undefined') { return false }
 
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what MetaMask injects as window.ethereum into each page
-    Main.provider = new ethers.providers.Web3Provider(window.ethereum)
-    // MetaMask requires requesting permission to connect users accounts
-    let accounts = await Main.provider.send("eth_requestAccounts", [])
+    let accounts
+    try {
+      // A Web3Provider wraps a standard Web3 provider, which is
+      // what MetaMask injects as window.ethereum into each page
+      Main.provider = new ethers.providers.Web3Provider(window.ethereum)
+      // MetaMask requires requesting permission to connect users accounts
+      accounts = await Main.provider.send("eth_requestAccounts", [])
 
-    // The provider also allows signing transactions to
-    // send ether and pay to change state within the blockchain.
-    // For this, we need the account signer...
-    Main.signer = Main.provider.getSigner()
+      // The provider also allows signing transactions to
+      // send ether and pay to change state within the blockchain.
+      // For this, we need the account signer...
+      Main.signer = Main.provider.getSigner()
+    }
+    catch {}
+
+    if(typeof(accounts) === 'undefined') { return false }
 
     if(accounts.length > 0) {
       Main.account = accounts[0]
-      $walletBtn.hide()
+      $walletBtn.html(Main.walletFormat(Main.account))
+      $('#place-bid').removeClass('disabled')
 
       let available = await Main.loadContract()
       if(!available) { return }
@@ -110,7 +98,7 @@ Main = {
       await Main.fetchAccountData()
     }
     else {
-      $walletBtn.show()
+      return false
     }
 
     return true
@@ -120,93 +108,16 @@ Main = {
     return acc
   },
   fetchAccountData: async () => {
-    $('#main-content').show()
-
-    let usdcBalance = await Main.usdc.balanceOf(Main.account)
-    $('#usdc-balance').html(
-      Main.toCurrency(Main.toEth(usdcBalance.toString()))
-    )
-
-    let allowanceUsdc = await Main.usdc.allowance(Main.account, Main.whitelist.address)
-    let account = await Main.whitelist.whitelist(Main.account)
-
-    // this needs to load without metamask connected
-    let currentPlan = await Main.whitelist.currentPlan({ from: Main.account })
-    switch(currentPlan.toString()) {
-      case '0':
-        $($('.levels')[0]).find('img').show()
-        $($('.levels')[0]).find('span').addClass('font-semibold')
-        break
-      case '1':
-        $($('.levels')[0]).find('span').addClass('text-strike')
-        $($('.levels')[1]).find('span').addClass('font-semibold')
-        $($('.levels')[1]).find('img').show()
-        break
-      case '2':
-        $($('.levels')[0]).find('span').addClass('text-strike')
-        $($('.levels')[1]).find('span').addClass('text-strike')
-        $($('.levels')[2]).find('span').addClass('font-semibold')
-        $($('.levels')[2]).find('img').show()
-        break
-      case '3':
-        $($('.levels')[0]).find('span').addClass('text-strike')
-        $($('.levels')[1]).find('span').addClass('text-strike')
-        $($('.levels')[2]).find('span').addClass('text-strike')
-        $($('.levels')[3]).find('span').addClass('font-semibold')
-        $($('.levels')[3]).find('img').show()
-        break
-    }
-
-    if(account.exists) { // already registered
-      $('#registered').show()
-      $('#referral-post-wl').show()
-      $('#referral-link').html(Main.account)
-      let numReferrals = await Main.whitelist.referralsLength(Main.account)
-      $('#referral-count').html(numReferrals.toString())
-      $('#referral-funds').html(parseInt(numReferrals) * 50)
-      $('#referral-referred-by').html(account.referredBy.toString())
-    }
-    else { // not registered
-      let currentSpotNumber = await Main.whitelist.whitelistLength()
-      let price = Main.plansPrice[currentPlan]
-      $('#register-box').find('#wl-number').html(currentSpotNumber.toString())
-      $('#register-box').find('#plan-price').html(price.toString())
-      $('#register-box').show()
-      $('#referral-pre-wl').show()
-
-      if(allowanceUsdc > 0) {
-        $('#pay-usdc').show()
-      }
-      else {
-        $('#approve-usdc').show()
-      }
-    }
-
-    let contractBalance = await Main.usdc.balanceOf(Main.whitelist.address)
-    console.log('contractBalance: ' + contractBalance.toString())
-    console.log('referral address: ' + referrerHash)
+    // anything to load from user?
   },
-  setupClickBuySpot: async () => {
-    $('#approve-usdc').on('click', async (e) => {
-      let amount = Main.toWei('1001')
-      Main.buttonLoadingHelper(e, 'approving...', async () => {
-        let tx = await Main.usdc.approve(Main.whitelist.address, amount)
-        Main.handleTransaction(tx.hash, 'Approving USDC to be spent...')
-        await tx.wait()
-      })
-    })
+  setupClickButtons: async () => {
+    $('#place-bid').on('click', async (e) => {
+      let amount = $('#bid-amount').val()
+      amount = Main.toWei(amount).toString()
 
-    $('#pay-usdc').on('click', async (e) => {
-      let referrer
-      if(referrerHash) {
-        referrer = referrerHash
-      }
-      else {
-        referrer = '0x0000000000000000000000000000000000000000'
-      }
-      Main.buttonLoadingHelper(e, 'reserving...', async () => {
-        let tx = await Main.whitelist.addToWhitelist(referrer)
-        Main.handleTransaction(tx.hash, 'Reserving your spot...')
+      Main.buttonLoadingHelper(e, 'bidding...', async () => {
+        let tx = await Main.auction.bid({ value: amount })
+        Main.handleTransaction(tx.hash, 'Placing your bid...')
         await tx.wait()
       })
     })

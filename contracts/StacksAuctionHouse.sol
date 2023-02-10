@@ -20,7 +20,8 @@ contract StacksAuctionHouse is Ownable, Stacks {
   constructor(address payable _treasuryAddress) {
     treasuryAddress = _treasuryAddress;
 
-    uint startTime = 1677628800; // Wed Mar 01 2023 00:00:00 GMT+0000
+    // uint startTime = 1677628800; // Wed Mar 01 2023 00:00:00 GMT+0000
+    uint startTime = 1676073600; // Test start: Sat Feb 11 2023 00:00:00 GMT+0000
     // Create the first auction
     auctions[0] = Auction({
       endPrice: 0,
@@ -46,6 +47,9 @@ contract StacksAuctionHouse is Ownable, Stacks {
 
   function bid() public payable {
     Auction memory auction = getCurrentAuction();
+    // does this work? Make sure it works!
+    require(auction.startTime <= block.timestamp, "Auction hasn't started yet.");
+
     require(msg.value > auction.endPrice, "Bid is too low");
     uint lastBid = auction.endPrice;
     address payable lastBidder = auctionWinner[totalAuctions];

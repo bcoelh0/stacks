@@ -78,6 +78,7 @@
           > -->
           <div class="dropdown relative">
             <button
+              id="wallet"
               class="py-2 dropbtn px-4 flex items-center gap-2.5 text-base bg-[#fff8] hover:bg-[white] border-[#7F859] border-2 font-medium font-[Poppins] shadow-none rounded-lg"
             >
               Connect Wallet
@@ -94,8 +95,7 @@
               <a
                 class="font-[Poppins] text-base shadow-none px-4 py-2 text-[red] hover:text-[black]"
                 href="#about"
-                >Disconnect</a
-              >
+                >Disconnect</a>
             </div>
           </div>
         </div>
@@ -302,6 +302,7 @@
             />
             <!-- set opacity-70 to show like disabled -->
             <button
+              id="place-bid"
               style="background-image: url(/static/images/button_bg.png)"
               class="bg-[length:100%_100%] hidden animated-button lg:block h-14 lg:h-full lg:text-[32px] text-white pb-0.5 disabled">
               <h1 class="shadow-none w-44">PLACE BID</h1>
@@ -687,7 +688,7 @@
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" type="application/javascript"></script>
     <script src="/static/script/read-auction.js"></script>
-    <!-- <script src="/static/script/main-auction.js"></script> -->
+    <script src="/static/script/main-auction.js"></script>
 
     <script src="/static/script/index-auction.js"></script>
     <script src="/static/script/countdown.js"></script>
