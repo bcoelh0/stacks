@@ -1,13 +1,3 @@
-window.onload = function () {
-  // needs a better solution
-  setTimeout(function () {
-    contDown = document.getElementById("countdown");
-    countFrom = parseInt(contDown.dataset.date) * 1000;
-    let date = new Date(countFrom);
-    countUpFromTime(date, contDown);
-  }, 500)
-};
-
 function countUpFromTime(countFrom, idEl) {
   var now = new Date(),
     countFrom = new Date(countFrom),

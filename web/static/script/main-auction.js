@@ -49,13 +49,23 @@ Main = {
     });
   },
   loadContract: async () => {
-    const StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
-    const Stacks = await $.getJSON('abis/Stacks.json')
+    let stacksAddress, auctionAddress, StacksAuctionHouse, Stacks
     let { chainId } = await Main.provider.getNetwork()
-    if (chainId == 1337) { chainId = 5777 }
-
-    let auctionAddress = StacksAuctionHouse['networks'][chainId.toString()]['address']
-    let stacksAddress = Stacks['networks'][chainId.toString()]['address']
+    if (chainId == 1337) {
+      chainId = 5777
+      StacksAuctionHouse = await $.getJSON('contracts/StacksAuctionHouse.json')
+      Stacks = await $.getJSON('contracts/Stacks.json')
+      auctionAddress = StacksAuctionHouse['networks'][chainId.toString()]['address']
+      stacksAddress = Stacks['networks'][chainId.toString()]['address']
+    }
+    else if(chainId == 80001) {
+      // Stacks: '0x2e89E7F9e9201a76F5df074677a735181886572D'
+      // StacksAuctionHouse: '0x19864D3d305E3C48D07Bcba6158e6b202098dFDe'
+      StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
+      Stacks = await $.getJSON('abis/Stacks.json')
+      auctionAddress = '0x19864D3d305E3C48D07Bcba6158e6b202098dFDe'
+      stacksAddress = '0x2e89E7F9e9201a76F5df074677a735181886572D'
+    }
 
     try {
       // Init contracts

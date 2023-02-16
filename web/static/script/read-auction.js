@@ -19,15 +19,22 @@ ReadAuction = {
     console.log('Read - loading done!')
   },
   loadContract: async () => {
-    let auctionAddress
+    let auctionAddress, StacksAuctionHouse
     let { chainId } = await ReadAuction.provider.getNetwork()
+
     if (chainId == 1337) {
       chainId = 5777
-      const StacksAuctionHouse = await $.getJSON('contracts/StacksAuctionHouse.json')
+      StacksAuctionHouse = await $.getJSON('contracts/StacksAuctionHouse.json')
       auctionAddress = StacksAuctionHouse['networks'][chainId.toString()]['address']
     }
+    else if(chainId == 80001) {
+      // Stacks: '0x2e89E7F9e9201a76F5df074677a735181886572D'
+      // StacksAuctionHouse: '0x19864D3d305E3C48D07Bcba6158e6b202098dFDe'
+      StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
+      auctionAddress = '0x19864D3d305E3C48D07Bcba6158e6b202098dFDe'
+    }
     else {
-      const StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
+      StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
       auctionAddress = '<address>'
     }
 
@@ -36,12 +43,12 @@ ReadAuction = {
       ReadAuction.auction = new ethers.Contract(auctionAddress, StacksAuctionHouse["abi"], ReadAuction.provider)
     }
     catch {
-      console.log('error loading contracts')
+      console.log('Read: error loading contracts')
     }
   },
   loadWeb3: async () => {
-    let url = 'http://127.0.0.1:8545'
-    // let url = 'https://goerli-rollup.arbitrum.io/rpc'
+    // let url = 'http://127.0.0.1:8545'
+    let url = 'https://matic-mumbai.chainstacklabs.com'
     // let url = 'https://arbitrum.public-rpc.com'
     ReadAuction.provider = new ethers.providers.JsonRpcProvider(url)
 
@@ -87,7 +94,12 @@ ReadAuction = {
 }
 
 $(() => {
-  $(window).on('load', () => {
-    ReadAuction.load()
+  $(window).on('load', async () => {
+    await ReadAuction.load()
+
+    let contDown = document.getElementById("countdown");
+    let countFrom = parseInt(contDown.dataset.date) * 1000;
+    let date = new Date(countFrom);
+    countUpFromTime(date, contDown);
   })
 })

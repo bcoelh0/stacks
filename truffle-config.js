@@ -11,12 +11,19 @@ module.exports = {
     },
     goerli: {
       provider: () => new HDWalletProvider(PRIVATE_KEY, `https://goerli.infura.io/v3/${INFURA_ID}`),
-      network_id: 5
+      network_id: 5,
+      gas: 5500000,
+      gasPrice: 26976751838,
+      // confirmations: 2,
+      timeoutBlocks: 200,
+      // skipDryRun: true
     },
-    mainnet: {
-      provider: () => new HDWalletProvider(PRIVATE_KEY, `https://mainnet.infura.io/v3/${INFURA_ID}`),
-      network_id: 1
-    },
+    mumbai: {
+      provider: () => new HDWalletProvider(PRIVATE_KEY, `https://polygon-mumbai.infura.io/v3/${INFURA_ID}`),
+      network_id: 80001,
+      gas: 5500000,
+      gasPrice: 26976751838,
+    }
   },
   // Set default mocha options here, use special reporters, etc.
   mocha: {
