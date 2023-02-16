@@ -49,8 +49,8 @@ Main = {
     });
   },
   loadContract: async () => {
-    const StacksAuctionHouse = await $.getJSON('contracts/StacksAuctionHouse.json')
-    const Stacks = await $.getJSON('contracts/Stacks.json')
+    const StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
+    const Stacks = await $.getJSON('abis/Stacks.json')
     let { chainId } = await Main.provider.getNetwork()
     if (chainId == 1337) { chainId = 5777 }
 

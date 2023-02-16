@@ -19,11 +19,17 @@ ReadAuction = {
     console.log('Read - loading done!')
   },
   loadContract: async () => {
-    const StacksAuctionHouse = await $.getJSON('contracts/StacksAuctionHouse.json')
+    let auctionAddress
     let { chainId } = await ReadAuction.provider.getNetwork()
-    if (chainId == 1337) { chainId = 5777 }
-
-    let auctionAddress = StacksAuctionHouse['networks'][chainId.toString()]['address']
+    if (chainId == 1337) {
+      chainId = 5777
+      const StacksAuctionHouse = await $.getJSON('contracts/StacksAuctionHouse.json')
+      auctionAddress = StacksAuctionHouse['networks'][chainId.toString()]['address']
+    }
+    else {
+      const StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
+      auctionAddress = '<address>'
+    }
 
     try {
       // Init contracts
