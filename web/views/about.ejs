@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind for pure styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/styles/style.css" />
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+    <!-- Title -->
+    <title>Stacks</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XEXC0V2C12"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XEXC0V2C12');
+    </script>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <div class="px-4 lg:max-w-screen-2xl mx-auto">
+      <!-- Top menu -->
+      <nav
+        id="nav"
+        class="flex items-center py-5 justify-between flex-row-reverse lg:flex-row"
+      >
+        <div class="hidden lg:flex lg:items-center lg:gap-8 flex-1">
+          <a href="/" class="flex items-center shadow-none gap-1 text-4xl">
+            Auction
+          </a>
+
+          <a href="/wl" class="flex items-center shadow-none gap-1 text-4xl">
+            About
+          </a>
+
+          <a
+            href="https://docs.stacksfi.xyz/"
+            class="shadow-none text-4xl"
+            target="_blank"
+            >DOCS</a
+          >
+        </div>
+        <img
+          id="button"
+          src="/static/images/bugger.svg"
+          alt=""
+          class="cursor-pointer z-[99] lg:hidden"
+        />
+        <img class="z-[99]" src="/static/images/logo.svg" alt="" />
+        <div class="lg:flex hidden gap-8 flex-1 justify-end">
+          <a
+            href="https://discord.com/invite/zpmUK2e4ST"
+            class="shadow-none text-4xl"
+            target="_blank"
+            >DISCORD</a
+          >
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-4xl"
+            target="_blank"
+            >TWITTER</a
+          >
+          <a href="https://mirror.xyz/0x934AE6cCb5f413D9DFCb4171A54ECeCf1c0dA782/" class="shadow-none text-4xl" target="_blank">
+            MIRROR
+          </a>
+        </div>
+        <div
+          id="modal"
+          class="fixed overflow-hidden lg:hidden duration-300 inset-0 bottom-full bg-[#fff] flex flex-col gap-4 items-center justify-center">
+
+          <a href="/wl" class="flex items-center shadow-none gap-1 shadow-none text-5xl">
+            WHITELIST
+          </a>
+          <a
+            href="https://docs.stacksfi.xyz/"
+            class="shadow-none text-5xl"
+            target="_blank"
+            >DOCS</a
+          >
+          <a
+            href="https://discord.com/invite/zpmUK2e4ST"
+            class="shadow-none text-5xl"
+            target="_blank"
+            >DISCORD</a
+          >
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-5xl"
+            target="_blank"
+            >TWITTER</a
+          >
+          <a href="https://mirror.xyz/0x934AE6cCb5f413D9DFCb4171A54ECeCf1c0dA782/" class="shadow-none text-5xl" target="_blank">
+            MIRROR
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Get Started -->
+    <section
+      class="max-w-[1100px] mx-auto px-4 py-16 flex flex-col gap-10 lg:flex-row lg:justify-between lg:py-28"
+    >
+      <div class="flex flex-col max-w-[420px] gap-6">
+        <h2
+          class="text-[72px] text-white leading-[56px] text-[#22252D] shadow-none"
+        >
+          About Stacks
+        </h2>
+        <p class="text-lg text-[#494E5B]">
+          Stacks will be funded by the community that'll use it and
+          reap its rewards. We're launching a paid whitelist. This serves two
+          purposes:
+        </p>
+        <div class="flex flex-col gap-5 mt-6">
+          <div class="flex items-start gap-3 text-lg text-[#494E5B]">
+            <img src="/static/images/tick.svg" alt="" />Gives you early access
+            to the project, with a limited numbers of participants.
+          </div>
+          <div class="flex items-start gap-3 text-lg text-[#494E5B]">
+            <img src="/static/images/tick.svg" alt="" />Gives the project an
+            initial boost of cash so it can get off the ground.
+          </div>
+        </div>
+        <a href="https://docs.stacksfi.xyz/launch/whitelist" target="_blank">
+          <img src="/static/images/learn.svg" class="mt-4" alt=""/>
+        </a>
+      </div>
+      <img src="/static/images/help.png" class="max-w-full" alt="" />
+    </section>
+
+    <!-- FAQs -->
+    <section class="bg-[#F7F7F0] w-full px-4 py-16 lg:py-32">
+      <div class="max-w-[1100px] mx-auto flex flex-col gap-10">
+        <h2 class="text-[72px] text-white leading-[56px] lg:text-center text-[#22252D] shadow-none lg:mb-6">
+
+          TL;DR OF <span class="lg:text-[#00AC54]">STACKS</span>
+        </h2>
+        <div class="flex flex-col bg-white rounded-[24px] px-6 w-full lg:p-8">
+          <!-- Start item -->
+          <button
+            class="accordion gap-2 flex justify-between text-xl font-semibold py-6"
+          >
+            <!-- Title -->
+            What is Stacks Finance?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              <!-- Description -->
+              Stacks finance is an investment community that manages a treasury created by the sale and re-sale of our exclusive Stacks NFTs. We cal it NFTfi (NFT + DeFi).
+              <br>
+              Our NFTs give the holder access to our dapp where they can see data about how the treasury is invest, the returns and they can manage their funds.
+              Holders will also be able to access exclusive alpha and market insights posted by other members doing research and post research themselves.
+            </p>
+          </div>
+          <!-- End Item -->
+
+          <button
+            class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]"
+          >
+            How can I participate?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              You can participate by buying one of our NFTs. The NFTs will be available
+              for auction on our website. We'll be auctioning one NFT every day for 10 years.
+              You can also participate early by buying a whitelist slot.
+            </p>
+          </div>
+
+          <button class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]">
+            How does the DAO make money?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              The DAO makes money by investing in different vehicles. The treasury is raised from the sale of the NFTs. This is considered our principle and should never be spent or diminish.
+              This principle is invested and then half of the profits are distributed to the DAO members. The other half is reinvested. The DAO members are the holders of the NFTs.
+              The investments of the DAO will be decided by the DAO's members, counsel and team. But the main investments will be set from the start and can be later changed.
+            </p>
+              <b>Automatic investments</b>
+              <ul>
+                <li>Stacking Ethereum</li>
+                <li>Providing liquidity to bluechip tokens</li>
+                <li>Stable coin farming</li>
+                <li>Invest into delta-neutral strategies</li>
+              </ul>
+              <br>
+              <b>Investments with prior approval by the community</b>
+              <ul>
+                <li>Invest in very early projects / seed</li>
+                <li>Invest in internal projects to be developed by the Stacks team</li>
+              </ul>
+              <br>
+          </div>
+
+          <button class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]">
+            What do I get with the whitelist?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              The whitelist offers a lot of benefits for early investors. Because you believe in the project early we want to reward you.
+
+              <br>1. You get <b>early access to the project</b>. You can buy the NFTs 50 days before the public sale.
+              <br>2. You get a <b>discount on the NFT</b>. The price of the NFTs will be discounted by the value you paid in the whitelist (also redeemable after WL is over).
+              <br>3. Early access to future features
+              <br>4. Exclusive access to <b>future airdrops</b> (from Stacks or our incubated projects)
+              <br>5. Discord role as "founder"
+              <br>6. Private Discord channel just for "founders", and better access to team and mods
+              <br>7. Exclusive access to future events (like AMAs just for founders)
+              <br>
+              <a class="shadow-none" href="https://docs.stacksfi.xyz/launch/whitelist" target="_blank">More about the whitelist</a>
+            </p>
+          </div>
+
+          <button class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]">
+            How do I join the whitelist?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              There's a cost to join the whitelist. This is helps us fund the project and allows people in the whitelist to get early access to the project. The cost of the whitelist will be discounted once an NFT is purchased.
+              Once the whitelist is open, simply connect your wallet, approve USDC and register. For all the information about the whitelist, <a class="shadow-none" href="https://docs.stacksfi.xyz/launch/whitelist" target="_blank">check this page</a>.
+            </p>
+          </div>
+
+          <button class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]">
+            How long will the whitelist last?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              There's no deadline for the whitelist. We'll keep it open until we launch Stacks or until it reaches 1,000 participants.
+            </p>
+          </div>
+
+          <button class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]">
+            How do whitelist referral work?
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base">
+              After you register for the whitelist, you will receive a unique referral link.
+              You can share this link with your friends, community and followers.
+              If they register using your link, you will receive 50 USDC per registration.
+              The funds will be available once the whitelist is over.
+            </p>
+          </div>
+
+          <button class="accordion gap-2 flex justify-between text-xl font-semibold py-6 border-b border-[#D9D9D9]">
+            Checkout our links and community
+
+            <img src="/static/images/down.svg" class="rotate-180" alt="" />
+          </button>
+          <div class="panel duration-300">
+            <p class="text-sm text-[#494E5B] lg:text-base flex flex-col">
+              <a href="https://discord.com/invite/zpmUK2e4ST" target="_blank" class="shadow-none text-4xl">DISCORD</a>
+              <a href="https://twitter.com/stacksfi_xyz" target="_blank" class="shadow-none text-4xl">TWITTER</a>
+              <a href="https://mirror.xyz/0x934AE6cCb5f413D9DFCb4171A54ECeCf1c0dA782/" target="_blank" class="shadow-none text-4xl">MIRROR</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Join Community -->
+
+    <section class="py-16 bg-white w-full">
+      <div
+        style="background-image: url(/static/images/community.jpg)"
+        class="xl:max-w-screen-2xl mx-auto py-16 mt-3 bg-cover flex flex-col items-center gap-10 pb-96 mx-4 rounded-[24px] 2xl:mr-auto 2xl:ml-auto xl:aspect-[126/74] lg:pt-28"
+      >
+        <h2
+          class="text-[72px] text-white text-center leading-[56px] shadow-none lg:text-[100px]"
+        >
+          JOIN THE COMMUNITY
+        </h2>
+        <!-- Social Networks -->
+        <div class="flex items-center gap-6">
+          <a href="https://discord.com/invite/zpmUK2e4ST" target="_blank">
+            <img src="/static/images/discord.svg" alt="" />
+          </a>
+          <a href="https://twitter.com/stacksfi_xyz" target="_blank">
+            <img src="/static/images/twitter.svg" alt="" />
+          </a>
+          <a href="https://github.com/bcoelh0/stacks" target="_blank">
+            <img src="/static/images/github.svg" alt="" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="xl:max-w-screen-2xl mx-auto w-full px-4">
+      <div class="flex lg:items-center items-start justify-between w-full">
+        <div
+          class="flex items-start flex-col lg:gap-12 gap-2 text-[#7F8596] lg:flex-row"
+        >
+          <a href="/wl" class="shadow-none text-3xl">WHITELIST</a>
+          <a href="https://docs.stacksfi.xyz/" target="_blank" class="shadow-none text-3xl">DOCS</a>
+        </div>
+        <div class="flex items-center lg:gap-6 gap-4">
+          <a href="https://discord.com/invite/zpmUK2e4ST" target="_blank"
+            ><img src="/static/images/discord_active.svg" alt=""
+          /></a>
+          <a href="https://twitter.com/stacksfi_xyz" target="_blank"
+            ><img src="/static/images/twitter_active.svg" alt=""
+          /></a>
+        </div>
+      </div>
+      <div class="w-full bg-[#E7E7E1] h-[1px] my-6"></div>
+      <div class="flex items-centr justify-between mb-6">
+        <p class="text-sm text-[#7F8596]">2022 Stacks Finance</p>
+        <!-- <p class="text-sm text-[#7F8596]">Privacy policy</p> -->
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/script/index.js"></script>
+    <script src="/static/script/countdown.js"></script>
+  </body>
+</html>

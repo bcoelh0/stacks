@@ -2,43 +2,51 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./Stacks.sol";
 
-contract StacksAuctionHouse is Ownable, Stacks {
+contract StacksAuctionHouse is Ownable {
   mapping(uint => Auction) public auctions;
   mapping(uint => address payable) public auctionWinner;
   uint public totalAuctions = 0;
+  uint public createdAuctions = 0;
   address payable public treasuryAddress;
+  // uint startTimeOfFirstAuction = 1677628800; // Wed Mar 01 2023 00:00:00 GMT+0000
+  uint startTimeOfFirstAuction = 1676073600;  // Test start: Sat Feb 11 2023 00:00:00 GMT+0000
 
   struct Auction {
     uint endPrice;
     uint startTime;
     uint endTime;
-    bool active;
+    bool closed;
   }
 
   constructor(address payable _treasuryAddress) {
     treasuryAddress = _treasuryAddress;
-
-    // uint startTime = 1677628800; // Wed Mar 01 2023 00:00:00 GMT+0000
-    uint startTime = 1676073600; // Test start: Sat Feb 11 2023 00:00:00 GMT+0000
     // Create the first auction
     auctions[0] = Auction({
       endPrice: 0,
-      startTime: startTime,
-      endTime: startTime + 1 days,
-      active: true
+      startTime: startTimeOfFirstAuction,
+      endTime: (startTimeOfFirstAuction + 1 days) - 1,
+      closed: false
     });
-    // Create the second auction
-    startAuction(1);
+    createdAuctions++;
+    // Create next 30 auctions
+    createAuctions(30);
   }
 
   function getCurrentWinner() public view returns (address payable) {
-    return auctionWinner[totalAuctions];
+    return auctionWinner[daysSinceStart()];
+  }
+
+  function getAuctionWinner(uint _tokenId) public view returns (address payable) {
+    return auctionWinner[_tokenId];
   }
 
   function getCurrentAuction() public view returns (Auction memory) {
-    return auctions[totalAuctions];
+    return auctions[daysSinceStart()];
+  }
+
+  function getLastCreatedAuction() public view returns (Auction memory) {
+    return auctions[createdAuctions - 1];
   }
 
   function getAuction(uint _tokenId) public view returns (Auction memory) {
@@ -47,57 +55,61 @@ contract StacksAuctionHouse is Ownable, Stacks {
 
   function bid() public payable {
     Auction memory auction = getCurrentAuction();
-    // does this work? Make sure it works!
-    require(auction.startTime <= block.timestamp, "Auction hasn't started yet.");
+    uint auctionId = daysSinceStart();
+    uint paidVal = msg.value;
 
-    require(msg.value > auction.endPrice, "Bid is too low");
+    require(paidVal > auction.endPrice, "Bid is too low");
     uint lastBid = auction.endPrice;
-    address payable lastBidder = auctionWinner[totalAuctions];
+    address payable lastBidder = auctionWinner[auctionId];
     // update the auction
-    auctionWinner[totalAuctions] = payable(msg.sender);
-    auctions[totalAuctions].endPrice = msg.value;
+    auctionWinner[auctionId] = payable(msg.sender);
+    auctions[auctionId].endPrice = paidVal;
+
     // refund last bidder
     lastBidder.transfer(lastBid);
-    // after-bid callback
-    if (auction.endTime < block.timestamp && auction.active) {
-      closeAuction(totalAuctions);
+
+    Auction memory lastAuction = getAuction(auctionId - 1);
+    if(!lastAuction.closed) {
+      closeAuction(auctionId - 1);
     }
   }
 
+  // closeAuction isn't needed, but we need to transfer funds to the treasury
   function closeAuction(uint _tokenId) private {
     Auction memory auction = auctions[_tokenId];
-    // close the auction and open the next one
-    auction.active = false;
-    auctions[_tokenId + 1].active = true;
-    // create new auction ahead of the current one
-    startAuction(_tokenId + 2);
-    // total auctions gets incremented when the auction is finished
-    totalAuctions++;
-    // then winner can mint
-    allowMint(_tokenId);
+    // close the auction
+    auctions[_tokenId].closed = true;
     // move funds to the treasury
     treasuryAddress.transfer(auction.endPrice);
-  }
-
-  function startAuction(uint _tokenId) private {
-    // this must run 1 in advance of the auction.
-    // [0, 1, 2 (current), 3] --> when current moves to 3, then the 4th is created
-    Auction memory lastAuction = auctions[_tokenId - 1];
-    auctions[_tokenId] = Auction({
-      endPrice: 0,
-      startTime: lastAuction.endTime + 1, // 1 second after the last auction ends
-      endTime: lastAuction.endTime + 1 days, // 1 day after the last auction ends
-      active: false
-    });
-  }
-
-  function allowMint(uint _tokenId) private {
-    // Allow the winner to mint the token on the Stacks contract
-    addAvailableForMint(_tokenId, auctionWinner[_tokenId]);
   }
 
   // Admin functions
   function setTreasuryAddress(address payable _treasuryAddress) public onlyOwner {
     treasuryAddress = _treasuryAddress;
+  }
+
+  // run to create auctions in bulk for the next _amount days
+  function createAuctions(uint _amount) public onlyOwner {
+    uint finalCreatedAuctions = createdAuctions + _amount;
+    for (uint i = createdAuctions; i < finalCreatedAuctions; i++) {
+      createNextAuction();
+    }
+  }
+
+  function createNextAuction() private {
+    Auction memory lastAuction = auctions[createdAuctions - 1];
+    auctions[createdAuctions] = Auction({
+      endPrice: 0,
+      startTime: lastAuction.endTime + 1, // 1 second after the last auction ends
+      endTime: lastAuction.endTime + 1 days, // 1 day after the last auction ends
+      // active: false,
+      closed: false
+    });
+    createdAuctions++;
+  }
+
+  // daysSinceStart() same as currentAuctionId()
+  function daysSinceStart() public view returns (uint) {
+    return (block.timestamp - startTimeOfFirstAuction) / 1 days;
   }
 }

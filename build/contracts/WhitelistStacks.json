@@ -14721,14 +14721,60 @@
   },
   "networks": {
     "5777": {
-      "events": {},
+      "events": {
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0xd03a333578b3bec046a21391622c18e0b54a2006f8720f38a8dc70f8e28c0d0e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "ReferralFeesPaid",
+          "type": "event"
+        },
+        "0x4790a4adb426ca2345bb5108f6e454eae852a7bf687544cd66a7270dff3a41d6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "WhitelistAdded",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0xB8F031c73B024D9E4ab2F74EAf868255a824EeAB",
-      "transactionHash": "0xa61104ef3bc64ec2fab5464cfe2ada05f032d5f8b7a0b59cf91de7c29e3d779b"
+      "address": "0xC52e3B3BB400a70f8BD2e460392DF03acE1114F8",
+      "transactionHash": "0x7c5426238f44ba427d4994155b1b044b9583e819cc795d2fb8ceb78e319c91ab"
     }
   },
   "schemaVersion": "3.4.10",
-  "updatedAt": "2023-02-10T10:10:34.725Z",
+  "updatedAt": "2023-02-16T12:15:56.084Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

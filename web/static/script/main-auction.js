@@ -112,6 +112,7 @@ Main = {
   },
   setupClickButtons: async () => {
     $('#place-bid').on('click', async (e) => {
+      e.preventDefault()
       let amount = $('#bid-amount').val()
       amount = Main.toWei(amount).toString()
 

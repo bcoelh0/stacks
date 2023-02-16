@@ -64,15 +64,15 @@ ReadAuction = {
     let endDate = new Date(currentAuctionEndTime * 1000)
 
     $('#auction-date').html(startDate.getDate() + ' ' + monthNames[startDate.getMonth()])
-    $('#auction-price').html(Math.round(currentAuctionPrice, 2))
-    $('#auction-end-date').html(endDate.getDate() + ' ' + monthNames[endDate.getMonth()] + ' @ 00:00 GMT')
+    $('#auction-price').html(Math.round(parseFloat(currentAuctionPrice) * 10000000) / 10000000)
+    $('#auction-end-date').html(endDate.getDate() + ' ' + monthNames[endDate.getMonth()] + ' @ 23:59:59 GMT')
     $('#countdown').attr('data-date', currentAuctionEndTime)
     let nextBid
     if(currentAuctionPrice == 0) {
       nextBid = 0.01
     }
     else {
-      nextBid = parseFloat(currentAuctionPrice) + 0.01
+      nextBid = parseFloat(currentAuctionPrice) + 0.001
     }
     $('#bid-amount').attr('placeholder', nextBid + ' ETH or more')
 

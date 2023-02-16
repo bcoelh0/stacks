@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "./WhitelistData.sol";
+import "./StacksAuctionHouse.sol";
 
 contract Stacks is ERC721, ERC2981, Ownable {
   bytes4 private constant _INTERFACE_ID_ERC2981 = 0x2a55205a;
@@ -14,7 +15,6 @@ contract Stacks is ERC721, ERC2981, Ownable {
 
   bool public wlMintOpen;
 
-  mapping(uint => address) public tokenMinter;
   mapping(uint => TokenMetaData) public tokenMetaDataRecord;
 
   address public auctionHouse;
@@ -25,6 +25,7 @@ contract Stacks is ERC721, ERC2981, Ownable {
 
   struct TokenMetaData {
     bool minted;
+    address minter;
     uint timestamp;
   }
 
@@ -32,17 +33,19 @@ contract Stacks is ERC721, ERC2981, Ownable {
 
   function mint(uint _tokenId) public {
     require(mintOpen, "Minting is not open");
-    require(_tokenId <= maxSupply, "Token ID is too high");
-    require(tokenMinter[_tokenId] == msg.sender, "You are not allowed to mint this token");
+    require(_tokenId >=0 && _tokenId <= maxSupply, "Token ID is invalid");
+
+    StacksAuctionHouse auctionHouseContract = StacksAuctionHouse(auctionHouse);
+    StacksAuctionHouse.Auction memory auction = auctionHouseContract.getAuction(_tokenId);
+    require(auction.endTime < block.timestamp, "Auction is not closed");
+
+    address payable auctionWinner = auctionHouseContract.getAuctionWinner(_tokenId);
+    require(auctionWinner == msg.sender, "You are not the winner of this auction");
+
     require(!tokenMetaDataRecord[_tokenId].minted, "Token has already been minted");
 
-    tokenMetaDataRecord[_tokenId] = TokenMetaData(true, block.timestamp);
+    tokenMetaDataRecord[_tokenId] = TokenMetaData(true, msg.sender, block.timestamp);
     _safeMint(msg.sender, _tokenId);
-  }
-
-  // Set who can mint the token with tokenId
-  function addAvailableForMint(uint _tokenId, address _auctionWinner) internal {
-    tokenMinter[_tokenId] = _auctionWinner;
   }
 
   // Admin functions
@@ -65,11 +68,9 @@ contract Stacks is ERC721, ERC2981, Ownable {
 
     // _tokenId for whitelist is between 0 and 250
     uint _tokenId = wlAccount.tokenId;
-    require(_tokenId <= maxSupply, "Token ID is too high");
     require(!tokenMetaDataRecord[_tokenId].minted, "Token has already been minted");
 
-    tokenMinter[_tokenId] = msg.sender;
-    tokenMetaDataRecord[_tokenId] = TokenMetaData(true, block.timestamp);
+    tokenMetaDataRecord[_tokenId] = TokenMetaData(true, msg.sender, block.timestamp);
     _safeMint(msg.sender, _tokenId);
   }
 
@@ -94,12 +95,10 @@ contract Stacks is ERC721, ERC2981, Ownable {
       require(block.timestamp > 1767225599, "Team can only mint the remaining tokens in 2025"); // 31/12/2025
     }
 
-    // set minter
-    addAvailableForMint(_tokenId, _teamMember);
     // set mint timestamp
-    tokenMetaDataRecord[_tokenId] = TokenMetaData(true, block.timestamp);
+    tokenMetaDataRecord[_tokenId] = TokenMetaData(true, _teamMember, block.timestamp);
     // mint token
-    _safeMint(msg.sender, _tokenId);
+    _safeMint(_teamMember, _tokenId);
     teamMinted++;
   }
 

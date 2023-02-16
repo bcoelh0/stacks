@@ -29,15 +29,19 @@ app.get(['/auction'], (req, res) => {
   res.render('auction')
 })
 
-app.get(['/wl', '/wl/:hash'], (req, res) => {
-  req.session.referral = req.session.referral || req.params.hash
-  res.render('whitelist', { hash: req.session.referral })
+app.get(['/about'], (req, res) => {
+  res.render('about')
 })
 
-app.get(['/clear'], (req, res) => {
-  req.session.referral = undefined
-  res.redirect('/wl')
-})
+// app.get(['/wl', '/wl/:hash'], (req, res) => {
+//   req.session.referral = req.session.referral || req.params.hash
+//   res.render('whitelist', { hash: req.session.referral })
+// })
+
+// app.get(['/clear'], (req, res) => {
+//   req.session.referral = undefined
+//   res.redirect('/wl')
+// })
 
 
 app.listen(port, () => {
