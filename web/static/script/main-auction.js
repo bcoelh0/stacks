@@ -51,7 +51,7 @@ Main = {
   loadContract: async () => {
     let stacksAddress, auctionAddress, StacksAuctionHouse, Stacks
     let { chainId } = await Main.provider.getNetwork()
-    if (chainId == 1337) {
+    if (chainId == 1337 || chainId == 5777) {
       chainId = 5777
       StacksAuctionHouse = await $.getJSON('contracts/StacksAuctionHouse.json')
       Stacks = await $.getJSON('contracts/Stacks.json')

@@ -74,9 +74,11 @@ contract StacksAuctionHouse is Ownable {
     auctions[auctionId].endPrice = paidVal;
     userAuctionsWon[msg.sender].push(auctionId);
 
-    // refund last bidder
-    userAuctionsWon[lastBidder].pop();
-    lastBidder.transfer(lastBid);
+    if(lastBidder != address(0)){
+      // refund last bidder
+      userAuctionsWon[lastBidder].pop();
+      lastBidder.transfer(lastBid);
+    }
 
     Auction memory lastAuction = getAuction(auctionId - 1);
     if(!lastAuction.closed) {
