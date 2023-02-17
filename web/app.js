@@ -26,21 +26,23 @@ app.get(['/', '/r/:hash'], (req, res) => {
   res.render('index', { hash: req.session.referral })
 })
 
-app.get(['/auction'], (req, res) => {
-  res.render('auction')
-})
+if(process.env.SHOW_AUCTION == 'true') {
+  app.get(['/auction'], (req, res) => {
+    res.render('auction')
+  })
 
-app.get(['/mint'], (req, res) => {
-  res.render('mint')
-})
+  app.get(['/mint'], (req, res) => {
+    res.render('mint')
+  })
 
-app.get(['/wl-mint'], (req, res) => {
-  res.render('wl-mint')
-})
+  app.get(['/wl-mint'], (req, res) => {
+    res.render('wl-mint')
+  })
 
-app.get(['/about'], (req, res) => {
-  res.render('about')
-})
+  app.get(['/about'], (req, res) => {
+    res.render('about')
+  })
+}
 
 app.get(['/founders-list'], (req, res) => {
   let list = ''
