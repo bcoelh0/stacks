@@ -23,6 +23,7 @@ contract Stacks is ERC721, ERC721Enumerable, ERC2981, Ownable {
   uint public maxSupply = 5000; // Immutable
   uint public softCap = 4009; // Available for auction - Immutable
   uint public teamMinted = 0;
+  address public wlDataAddress;
   address public treasuryAddress;
 
   struct TokenMetaData {
@@ -31,8 +32,9 @@ contract Stacks is ERC721, ERC721Enumerable, ERC2981, Ownable {
     uint timestamp;
   }
 
-  constructor(address _treasuryAddress) ERC721("Stacks Investment Card", "STACKS") {
+  constructor(address _treasuryAddress, address _wlDataAddress) ERC721("Stacks Investment Card", "STACKS") {
     treasuryAddress = _treasuryAddress;
+    wlDataAddress = _wlDataAddress;
   }
 
   function mint(uint _tokenId) public {
@@ -69,10 +71,9 @@ contract Stacks is ERC721, ERC721Enumerable, ERC2981, Ownable {
 
   function wlMint() public {
     require(wlMintOpen, "Minting is not open");
-    WhitelistData.Account memory wlAccount = new WhitelistData().getWhitelistAccount(msg.sender);
+    WhitelistData.Account memory wlAccount = WhitelistData(wlDataAddress).getWhitelistAccount(msg.sender);
     require(wlAccount.exists, "Address not whitelisted");
 
-    // _tokenId for whitelist is between 0 and 250
     uint _tokenId = wlAccount.tokenId;
     require(!tokenMetaDataRecord[_tokenId].minted, "Token has already been minted");
 

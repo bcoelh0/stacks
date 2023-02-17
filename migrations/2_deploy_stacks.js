@@ -1,6 +1,8 @@
-var Stacks = artifacts.require("./Stacks.sol")
+const Stacks = artifacts.require("./Stacks.sol")
+const WhitelistData = artifacts.require("./WhitelistData.sol")
 
 module.exports = async function(deployer, network, accounts) {
   let treasury = accounts[0]
-  await deployer.deploy(Stacks, treasury)
+  let wlData = await  WhitelistData.deployed()
+  await deployer.deploy(Stacks, treasury, wlData.address)
 };

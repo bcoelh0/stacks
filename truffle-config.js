@@ -18,6 +18,10 @@ module.exports = {
       timeoutBlocks: 200,
       // skipDryRun: true
     },
+    ethereum: {
+      provider: () => new HDWalletProvider(PRIVATE_KEY, `https://mainnet.infura.io/v3/${INFURA_ID}`),
+      network_id: 1,
+    },
     mumbai: {
       provider: () => new HDWalletProvider(PRIVATE_KEY, `https://polygon-mumbai.infura.io/v3/${INFURA_ID}`),
       network_id: 80001,

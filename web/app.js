@@ -34,13 +34,17 @@ app.get(['/mint'], (req, res) => {
   res.render('mint')
 })
 
+app.get(['/wl-mint'], (req, res) => {
+  res.render('wl-mint')
+})
+
 app.get(['/about'], (req, res) => {
   res.render('about')
 })
 
 app.get(['/founders-list'], (req, res) => {
   let list = ''
-  for(i=0; i<110; i++) { list += `${i},` }
+  for(i = (4010 - 110); i < 4010; i++) { list += `${i},` }
   res.send(list)
 })
 

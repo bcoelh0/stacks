@@ -1,11 +1,16 @@
 {
-  "testnetAddress": "0xE743D7E17f2876b6eE5e3A112E11Bc846De82481",
+  "testnetAddress": "0x354544106416eD6Daf01023079cF6B0E31f986c1",
   "abi": [
     {
       "inputs": [
         {
           "internalType": "address",
           "name": "_treasuryAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_wlDataAddress",
           "type": "address"
         }
       ],
@@ -553,6 +558,20 @@
     {
       "inputs": [],
       "name": "treasuryAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "wlDataAddress",
       "outputs": [
         {
           "internalType": "address",

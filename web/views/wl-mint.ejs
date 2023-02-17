@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind for pure styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/styles/auction/style.css" />
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Title -->
+    <title>Stacks</title>
+  </head>
+
+  <body class="bg-[#F7F7F0]">
+    <!-- Header -->
+    <div class="px-4 lg:max-w-screen-2xl mx-auto">
+      <!-- Top menu -->
+      <nav
+        id="nav"
+        class="flex items-center py-5 justify-between flex-row-reverse lg:flex-row z-[1] relative lg:h-[86px]"
+      >
+        <!-- Left Menu -->
+        <div
+          class="hidden lg:flex lg:items-center lg:gap-8 flex-1 font-semibold"
+        >
+          <a
+            href="#"
+            class="flex font-[Poppins] items-center shadow-none gap-1 text-lg"
+            >Docs</a
+          >
+          <a
+            href="https://docs.stacksfi.xyz/launch/whitelist"
+            class="shadow-none font-[Poppins] text-lg"
+            >Discourse</a
+          >
+        </div>
+        <!-- /Left Menu -->
+
+        <!-- Mobile Button -->
+        <img
+          id="button"
+          src="/static/images/bugger.svg"
+          alt=""
+          class="cursor-pointer z-[99] lg:hidden"
+        />
+        <!-- /Mobile Button -->
+
+        <!-- Logo -->
+        <img class="z-[99]" src="/static/images/logo.svg" alt="" />
+        <!-- /Logo -->
+
+        <!-- Right Menu -->
+        <div
+          class="lg:flex hidden gap-8 flex-1 justify-end items-center font-semibold"
+        >
+          <a
+            href="https://discord.com/invite/zpmUK2e4ST"
+            class="shadow-none text-lg font-[Poppins]"
+            >Discord</a
+          >
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-lg font-[Poppins]"
+            >Twitter</a
+          >
+          <a href="#" class="shadow-none text-lg font-[Poppins]">Mirror</a>
+          <!-- <a
+            href="#"
+            class="py-2 px-4 bg-[white] border-[#7F859] text-lg font-[Poppins] shadow-none rounded-lg border-[#7F859] border"
+            >Connect</a
+          > -->
+          <div class="dropdown relative">
+            <button
+              id="wallet"
+              class="py-2 dropbtn px-4 flex items-center gap-2.5 text-base bg-[#fff8] hover:bg-[white] border-[#7F859] border-2 font-medium font-[Poppins] shadow-none rounded-lg"
+            >
+              Connect Wallet
+            </button>
+            <div
+              id="myDropdown"
+              class="dropdown-content hidden absolute w-full bg-white top-full mt-1 border-[#7F859] flex flex-col border-2 rounded-xl py-2"
+            >
+              <a
+                class="font-[Poppins] text-base shadow-none px-4 py-2 text-[#7F8596]"
+                href="#home"
+                >Switch Wallet</a
+              >
+              <a
+                class="font-[Poppins] text-base shadow-none px-4 py-2 text-[red] hover:text-[black]"
+                href="#about"
+                >Disconnect</a>
+            </div>
+          </div>
+        </div>
+        <!-- /Right Menu -->
+
+        <!-- Mobile Menu -->
+        <div
+          id="modal"
+          class="fixed overflow-hidden lg:hidden duration-300 inset-0 bottom-full bg-[#fff] flex flex-col gap-4 items-center justify-center"
+        >
+          <!-- remove "mt-auto" class in bottom if does not exists account -->
+          <a
+            href="https://docs.stacksfi.xyz/launch/whitelist"
+            class="shadow-none text-4xl mt-auto"
+            >Docs</a
+          >
+          <a
+            href="https://docs.stacksfi.xyz/launch/whitelist"
+            class="shadow-none text-4xl"
+            >Discourse</a
+          >
+          <a
+            href="https://discord.com/invite/zpmUK2e4ST"
+            class="shadow-none text-4xl"
+            >Discord</a
+          >
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-4xl"
+            >Twitter</a
+          >
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-4xl"
+            >Mirror</a
+          >
+          <!-- When has account -->
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-4xl mt-auto"
+            >Switch Wallet</a
+          >
+          <a
+            href="https://twitter.com/stacksfi_xyz"
+            class="shadow-none text-4xl mb-6 text-[red] hover:text-[bkack]"
+            >Disconnect</a
+          >
+          <!-- /When has account -->
+        </div>
+        <!-- /Mobile Menu -->
+      </nav>
+      <!-- /Top menu -->
+
+      <!-- Hero -->
+      <header
+        class="flex lg:gap-20 gap-9 flex-col pb-10 lg:flex-row lg:py-10 lg:pt-0"
+      >
+        <div
+          class="flex w-full rounded-[32px] border-[#ADAD99] border p-2 overflow-hidden aspect-square lg:aspect-[unset] lg:h-[672px]"
+        >
+          <div
+            style="background-image: url(/static/images/main.png)"
+            class="rounded-[24px] bg-cover bg-center w-full h-full"
+          ></div>
+        </div>
+        <div
+          class="flex flex-col lg:flex-[0_0_480px] w-full text-center lg:py-5 lg:text-left"
+        >
+          <!-- Date -->
+          <div
+            class="flex items-center justify-between lg:justify-start lg:gap-3 text-xl font-[Poppins] font-semibold text-[#7F8596]"
+          >
+
+            <!-- <a href="#" class="opacity-70 hover:opacity-100 rotate-180 disabled"><img src="/static/images/arrow.svg" alt=""/></a> -->
+          </div>
+          <!-- /Date -->
+
+          <h1
+            class="text-[48px] lg:text-[66px] lg:leading-[72px] leading-[56px] shadow-none text-[#22252D] lg:whitespace-nowrap"
+          >
+            STACKS INVESTMENT CARD
+          </h1>
+          <div class="flex text-[#22252D] text-lg items-center lg:justify-start gap-2.5 justify-center mb-6 lg:mb-7">
+            <div class="flex rounded-[30px] w-fit p-1 pl-2 gap-1 border-[#DFEC4A]">
+              If you whitelisted an address simply connect your wallet and mint bellow.
+            </div>
+          </div>
+          <!-- Count down -->
+          <div
+            id="countdown"
+            data-date=""
+            class="flex flex-col gap-6 border-[#E7E7E1] border-2 rounded-[24px] py-4 items-center bg-white"
+          >
+            <!--  Title -->
+            <div class="flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-2">
+
+              <form  class="flex flex-col gap-4 mt-6 mb-8 lg:flex-row">
+                <!-- set opacity-70 to show like disabled -->
+                <button
+                  id="mint"
+                  style="background-image: url(/static/images/button_bg.png);"
+                  class="bg-[length:100%_100%] animated-button lg:block h-14 lg:h-full lg:text-[42px] text-white pb-0.5">
+                  <h1 class="shadow-none w-44">MINT</h1>
+                </button>
+                <button class="lg:hidden animated-button">
+                  <img
+                    src="/static/images/place_bit.svg"
+                    class="w-full max-w-[480px] mx-auto"
+                    alt=""
+                  />
+                </button>
+              </form>
+
+
+            </div>
+            <!-- /Title -->
+          </div>
+
+        </div>
+      </header>
+      <!-- /Hero -->
+    </div>
+    <!-- /Header -->
+
+    <section class="py-16 w-full">
+      <div
+        style="
+          background-image: url(/static/images/community.jpg);
+          background-position: center bottom;
+        "
+        class="xl:max-w-screen-2xl mx-auto py-16 mt-3 bg-cover flex flex-col items-center gap-12 pb-96 mx-4 rounded-[24px] 2xl:mr-auto 2xl:ml-auto xl:aspect-[16/9] lg:pt-28"
+      >
+        <h2
+          class="text-[72px] text-white text-center leading-[56px] shadow-none lg:text-[100px]"
+        >
+          JOIN THE <span class="text-[#00FB7A]"> COMMUNITY</span>
+        </h2>
+        <!-- Social Networks -->
+        <div class="flex items-center gap-6">
+          <a href="https://discord.com/invite/zpmUK2e4ST">
+            <img src="/static/images/discord.svg" alt="" />
+          </a>
+          <a href="https://twitter.com/stacksfi_xyz">
+            <img src="/static/images/twitter.svg" alt="" />
+          </a>
+          <a href="#">
+            <img src="/static/images/github.svg" alt="" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="xl:max-w-screen-2xl mx-auto w-full px-4">
+      <div class="flex lg:items-center items-start justify-between w-full">
+        <div
+          class="flex items-start flex-col lg:gap-12 gap-2 text-[#7F8596] lg:flex-row"
+        >
+          <a href="#" class="shadow-none text-3xl">Discource</a>
+          <a href="#" class="shadow-none text-3xl">Docs</a>
+        </div>
+        <div class="flex items-center lg:gap-6 gap-4">
+          <a href="#"
+            ><img src="/static/images/discord_active.svg" alt=""
+          /></a>
+          <a href="#"
+            ><img src="/static/images/twitter_active.svg" alt=""
+          /></a>
+        </div>
+      </div>
+      <div class="w-full bg-[#E7E7E1] h-[1px] my-6"></div>
+      <div class="flex items-centr justify-between mb-6">
+        <p class="text-sm text-[#7F8596]">© 2023 Stacked Finance</p>
+        <p class="text-sm text-[#7F8596]">Privacy policy</p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" type="application/javascript"></script>
+    <script src="/static/script/wl-mint/main.js"></script>
+  </body>
+</html>
