@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract StacksAuctionHouse is Ownable {
   mapping(uint => Auction) public auctions;
+  mapping(address => uint[]) public userAuctionsWon;
+
   uint public createdAuctions = 0;
   address payable public treasuryAddress;
   bool public auctionOpened = true;
@@ -32,6 +34,10 @@ contract StacksAuctionHouse is Ownable {
     createdAuctions++;
     // Create next 30 auctions
     createAuctions(30);
+  }
+
+  function getUserAuctionsWon(address _user) public view returns (uint[] memory) {
+    return userAuctionsWon[_user];
   }
 
   function getCurrentWinner() public view returns (address payable) {
@@ -66,8 +72,10 @@ contract StacksAuctionHouse is Ownable {
     // update the auction
     auctions[auctionId].topBidder = payable(msg.sender);
     auctions[auctionId].endPrice = paidVal;
+    userAuctionsWon[msg.sender].push(auctionId);
 
     // refund last bidder
+    userAuctionsWon[lastBidder].pop();
     lastBidder.transfer(lastBid);
 
     Auction memory lastAuction = getAuction(auctionId - 1);

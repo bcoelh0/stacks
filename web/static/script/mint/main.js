@@ -1,6 +1,6 @@
 Main = {
-  AuctionContractTestnet: '0xB125DF80Ead3A5F78Ac4a1Db6Cf440538F69e483',
   StacksContractTestnet: '0xc2000543D116057d1A456Ea8ae1BC33fB240f938',
+  AuctionContractTestnet: '0xB125DF80Ead3A5F78Ac4a1Db6Cf440538F69e483',
   loading: false,
   contracts: {},
   toEth: (n) => {
@@ -27,7 +27,7 @@ Main = {
     await Main.setupClickButtons()
 
     await Main.toggleLoadingScreen(false)
-    console.log('Write - loading done!')
+    console.log('Mint - loading done!')
   },
   toggleLoadingScreen: async (load) => {
     if(load) {
@@ -53,7 +53,8 @@ Main = {
   loadContract: async () => {
     let stacksAddress, auctionAddress, StacksAuctionHouse, Stacks
     let { chainId } = await Main.provider.getNetwork()
-    if (chainId == 1337) {
+
+    if (chainId == 1337 || chainId == 5777) {
       chainId = 5777
       StacksAuctionHouse = await $.getJSON('contracts/StacksAuctionHouse.json')
       Stacks = await $.getJSON('contracts/Stacks.json')
@@ -118,17 +119,35 @@ Main = {
     return acc
   },
   fetchAccountData: async () => {
-    // anything to load from user?
+    let auctionsWon = await Main.auction.getUserAuctionsWon(Main.account)
+
+    if(auctionsWon.length == 0) {
+      $('#loading').hide()
+      $('#no-nfts').show()
+    }
+    else {
+      let $select = $('#mint-select')
+      for(let i = 0; i < auctionsWon.length; i++) {
+        let auctionId = auctionsWon[i]
+        let token = await Main.stacks.tokenMetaDataRecord(auctionId)
+        if(!token.minted) {
+          $select.append(`<option value="${auctionId}">Token ID: ${auctionId}</option>`)
+        }
+      }
+      $('#loading').hide()
+      $('#mint').removeAttr('disabled')
+      $('#mint').removeClass('disabled')
+      $('#mint-form').show()
+    }
   },
   setupClickButtons: async () => {
-    $('#place-bid').on('click', async (e) => {
+    $('#mint').on('click', async (e) => {
       e.preventDefault()
-      let amount = $('#bid-amount').val()
-      amount = Main.toWei(amount).toString()
+      let tokenId = $('#mint-select').val()
 
-      Main.buttonLoadingHelper(e, 'bidding...', async () => {
-        let tx = await Main.auction.bid({ value: amount })
-        Main.handleTransaction(tx.hash, 'Placing your bid...')
+      Main.buttonLoadingHelper(e, 'minting...', async () => {
+        let tx = await Main.stacks.mint(tokenId)
+        Main.handleTransaction(tx.hash, 'Minting Stacks Investment Card...')
         await tx.wait()
       })
     })

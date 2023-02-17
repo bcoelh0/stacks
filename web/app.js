@@ -30,6 +30,10 @@ app.get(['/auction'], (req, res) => {
   res.render('auction')
 })
 
+app.get(['/mint'], (req, res) => {
+  res.render('mint')
+})
+
 app.get(['/about'], (req, res) => {
   res.render('about')
 })

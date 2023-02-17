@@ -5,6 +5,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract WhitelistData is Ownable {
+  // Whitelist will have the last IDs not to disturb the auction contract
+  uint public wlLength = 110;
+  uint public startOfWl = 4009 - wlLength;
+  uint public wlDataLength = 0;
+
   struct Account {
     uint tokenId;
     bool exists;
@@ -13,13 +18,15 @@ contract WhitelistData is Ownable {
   mapping(address => Account) public accounts;
 
   function bulkAddWhitelistAccounts(address[] memory _accounts) public onlyOwner {
-    for(uint i = 0; i < _accounts.length; i++) {
+    for(uint i = startOfWl; i < _accounts.length; i++) {
       accounts[_accounts[i]] = Account(i, true);
+      wlDataLength++;
     }
   }
 
-  function addWhitelistAccount(address _account, uint _tokenId) public onlyOwner {
-    accounts[_account] = Account(_tokenId, true);
+  function addWhitelistAccount(address _account) public onlyOwner {
+    accounts[_account] = Account(wlDataLength, true);
+    wlDataLength++;
   }
 
   function getWhitelistAccount(address _account) public view returns (Account memory) {
