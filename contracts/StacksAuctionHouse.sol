@@ -5,15 +5,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract StacksAuctionHouse is Ownable {
   mapping(uint => Auction) public auctions;
-  mapping(uint => address payable) public auctionWinner;
   uint public totalAuctions = 0;
   uint public createdAuctions = 0;
   address payable public treasuryAddress;
+  bool public auctionOpened = true;
   // uint startTimeOfFirstAuction = 1677628800; // Wed Mar 01 2023 00:00:00 GMT+0000
   uint startTimeOfFirstAuction = 1676073600;  // Test start: Sat Feb 11 2023 00:00:00 GMT+0000
 
   struct Auction {
     uint endPrice;
+    address payable topBidder;
     uint startTime;
     uint endTime;
     bool closed;
@@ -24,6 +25,7 @@ contract StacksAuctionHouse is Ownable {
     // Create the first auction
     auctions[0] = Auction({
       endPrice: 0,
+      topBidder: payable(address(0)),
       startTime: startTimeOfFirstAuction,
       endTime: (startTimeOfFirstAuction + 1 days) - 1,
       closed: false
@@ -34,11 +36,11 @@ contract StacksAuctionHouse is Ownable {
   }
 
   function getCurrentWinner() public view returns (address payable) {
-    return auctionWinner[daysSinceStart()];
+    return auctions[daysSinceStart()].topBidder;
   }
 
   function getAuctionWinner(uint _tokenId) public view returns (address payable) {
-    return auctionWinner[_tokenId];
+    return auctions[_tokenId].topBidder;
   }
 
   function getCurrentAuction() public view returns (Auction memory) {
@@ -54,15 +56,16 @@ contract StacksAuctionHouse is Ownable {
   }
 
   function bid() public payable {
+    require(auctionOpened, "Auction is closed");
     Auction memory auction = getCurrentAuction();
     uint auctionId = daysSinceStart();
     uint paidVal = msg.value;
 
     require(paidVal > auction.endPrice, "Bid is too low");
     uint lastBid = auction.endPrice;
-    address payable lastBidder = auctionWinner[auctionId];
+    address payable lastBidder = auction.topBidder;
     // update the auction
-    auctionWinner[auctionId] = payable(msg.sender);
+    auctions[auctionId].topBidder = payable(msg.sender);
     auctions[auctionId].endPrice = paidVal;
 
     // refund last bidder
@@ -70,12 +73,17 @@ contract StacksAuctionHouse is Ownable {
 
     Auction memory lastAuction = getAuction(auctionId - 1);
     if(!lastAuction.closed) {
-      closeAuction(auctionId - 1);
+      _closeAuction(auctionId - 1);
     }
   }
 
-  // closeAuction isn't needed, but we need to transfer funds to the treasury
-  function closeAuction(uint _tokenId) private {
+  function closeAuction(uint _tokenId) public onlyOwner {
+    Auction memory auction = auctions[_tokenId];
+    require(!auction.closed, "Auction already closed");
+    _closeAuction(_tokenId);
+  }
+
+  function _closeAuction(uint _tokenId) private {
     Auction memory auction = auctions[_tokenId];
     // close the auction
     auctions[_tokenId].closed = true;
@@ -86,6 +94,10 @@ contract StacksAuctionHouse is Ownable {
   // Admin functions
   function setTreasuryAddress(address payable _treasuryAddress) public onlyOwner {
     treasuryAddress = _treasuryAddress;
+  }
+
+  function setAuctionOpened(bool _open) public onlyOwner {
+    auctionOpened = _open;
   }
 
   // run to create auctions in bulk for the next _amount days
@@ -100,9 +112,9 @@ contract StacksAuctionHouse is Ownable {
     Auction memory lastAuction = auctions[createdAuctions - 1];
     auctions[createdAuctions] = Auction({
       endPrice: 0,
+      topBidder: payable(address(0)),
       startTime: lastAuction.endTime + 1, // 1 second after the last auction ends
       endTime: lastAuction.endTime + 1 days, // 1 day after the last auction ends
-      // active: false,
       closed: false
     });
     createdAuctions++;

@@ -59,12 +59,10 @@ Main = {
       stacksAddress = Stacks['networks'][chainId.toString()]['address']
     }
     else if(chainId == 80001) {
-      // Stacks: '0x2e89E7F9e9201a76F5df074677a735181886572D'
-      // StacksAuctionHouse: '0x19864D3d305E3C48D07Bcba6158e6b202098dFDe'
       StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
       Stacks = await $.getJSON('abis/Stacks.json')
-      auctionAddress = '0x19864D3d305E3C48D07Bcba6158e6b202098dFDe'
-      stacksAddress = '0x2e89E7F9e9201a76F5df074677a735181886572D'
+      auctionAddress = '0xE2e9037cE2524A752DF4b8538b713425116855A7'
+      stacksAddress = '0xc1959cAF045755881DdFE10736037f802d6E3cF0'
     }
 
     try {

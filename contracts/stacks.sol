@@ -3,11 +3,12 @@ pragma solidity >=0.4.22 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "./WhitelistData.sol";
 import "./StacksAuctionHouse.sol";
 
-contract Stacks is ERC721, ERC2981, Ownable {
+contract Stacks is ERC721, ERC721Enumerable, ERC2981, Ownable {
   bytes4 private constant _INTERFACE_ID_ERC2981 = 0x2a55205a;
 
   uint public constant PERCENT_DIVIDER = 10000;
@@ -22,6 +23,7 @@ contract Stacks is ERC721, ERC2981, Ownable {
   uint public maxSupply = 5000; // Immutable
   uint public softCap = 4009; // Available for auction - Immutable
   uint public teamMinted = 0;
+  address public treasuryAddress;
 
   struct TokenMetaData {
     bool minted;
@@ -29,7 +31,9 @@ contract Stacks is ERC721, ERC2981, Ownable {
     uint timestamp;
   }
 
-  constructor() ERC721("Stacks Investment Card", "STACKS") {}
+  constructor(address _treasuryAddress) ERC721("Stacks Investment Card", "STACKS") {
+    treasuryAddress = _treasuryAddress;
+  }
 
   function mint(uint _tokenId) public {
     require(mintOpen, "Minting is not open");
@@ -38,9 +42,7 @@ contract Stacks is ERC721, ERC2981, Ownable {
     StacksAuctionHouse auctionHouseContract = StacksAuctionHouse(auctionHouse);
     StacksAuctionHouse.Auction memory auction = auctionHouseContract.getAuction(_tokenId);
     require(auction.endTime < block.timestamp, "Auction is not closed");
-
-    address payable auctionWinner = auctionHouseContract.getAuctionWinner(_tokenId);
-    require(auctionWinner == msg.sender, "You are not the winner of this auction");
+    require(auction.topBidder == msg.sender, "You are not the winner of this auction");
 
     require(!tokenMetaDataRecord[_tokenId].minted, "Token has already been minted");
 
@@ -49,6 +51,10 @@ contract Stacks is ERC721, ERC2981, Ownable {
   }
 
   // Admin functions
+  function setTreasuryAddress(address payable _treasuryAddress) public onlyOwner {
+    treasuryAddress = _treasuryAddress;
+  }
+
   function setAuctionHouse(address _auctionHouse) public onlyOwner {
     auctionHouse = _auctionHouse;
   }
@@ -107,13 +113,13 @@ contract Stacks is ERC721, ERC2981, Ownable {
     SALE_FEE = _SALE_FEE;
   }
 
-  function supportsInterface(bytes4 _interfaceId) public view virtual override(ERC721, ERC2981) returns (bool) {
+  function supportsInterface(bytes4 _interfaceId) public view virtual override(ERC721, ERC2981, ERC721Enumerable) returns (bool) {
     if (_interfaceId == _INTERFACE_ID_ERC2981) { return true; }
     return super.supportsInterface(_interfaceId);
   }
 
   function royaltyInfo(uint256, uint256 _salePrice) override view public returns (address receiver, uint256 royaltyAmount){
-    return (owner(), _salePrice * SALE_FEE / PERCENT_DIVIDER);
+    return (treasuryAddress, _salePrice * SALE_FEE / PERCENT_DIVIDER);
   }
 
   // Overwrite tokenURI
@@ -125,6 +131,10 @@ contract Stacks is ERC721, ERC2981, Ownable {
 
   // Overwrite _baseURI
   function _baseURI() override pure internal returns (string memory) {
-    return "ipfs://QmX7RzdCUHzPng8mssTpXABWTxVFVQwNX124tmpQUQiF9p/stacks";
+    return "ipfs://QmWGK8DFya3xn642gLtp5zdTz2kKJetaiVX8razBL5Nzu4/stacks";
+  }
+
+  function _beforeTokenTransfer(address from, address to, uint256 firstTokenId, uint256 batchSize) internal virtual override(ERC721, ERC721Enumerable) {
+    return super._beforeTokenTransfer(from, to, firstTokenId, batchSize);
   }
 }

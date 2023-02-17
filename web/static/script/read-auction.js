@@ -28,10 +28,8 @@ ReadAuction = {
       auctionAddress = StacksAuctionHouse['networks'][chainId.toString()]['address']
     }
     else if(chainId == 80001) {
-      // Stacks: '0x2e89E7F9e9201a76F5df074677a735181886572D'
-      // StacksAuctionHouse: '0x19864D3d305E3C48D07Bcba6158e6b202098dFDe'
       StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
-      auctionAddress = '0x19864D3d305E3C48D07Bcba6158e6b202098dFDe'
+      auctionAddress = '0xE2e9037cE2524A752DF4b8538b713425116855A7'
     }
     else {
       StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')

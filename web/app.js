@@ -34,6 +34,12 @@ app.get(['/about'], (req, res) => {
   res.render('about')
 })
 
+app.get(['/founders-list'], (req, res) => {
+  let list = ''
+  for(i=0; i<110; i++) { list += `${i},` }
+  res.send(list)
+})
+
 // app.get(['/wl', '/wl/:hash'], (req, res) => {
 //   req.session.referral = req.session.referral || req.params.hash
 //   res.render('whitelist', { hash: req.session.referral })
