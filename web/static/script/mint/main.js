@@ -1,6 +1,4 @@
 Main = {
-  StacksContractTestnet: '0xc2000543D116057d1A456Ea8ae1BC33fB240f938',
-  AuctionContractTestnet: '0xB125DF80Ead3A5F78Ac4a1Db6Cf440538F69e483',
   loading: false,
   contracts: {},
   toEth: (n) => {
@@ -64,8 +62,8 @@ Main = {
     else if(chainId == 80001) {
       StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
       Stacks = await $.getJSON('abis/Stacks.json')
-      auctionAddress = Main.AuctionContractTestnet
-      stacksAddress = Main.StacksContractTestnet
+      auctionAddress = StacksAuctionHouse['testnetAddress']
+      stacksAddress = Stacks['testnetAddress']
     }
 
     try {
