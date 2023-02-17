@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract StacksAuctionHouse is Ownable {
   mapping(uint => Auction) public auctions;
-  uint public totalAuctions = 0;
   uint public createdAuctions = 0;
   address payable public treasuryAddress;
   bool public auctionOpened = true;

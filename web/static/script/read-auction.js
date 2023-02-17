@@ -1,4 +1,5 @@
 ReadAuction = {
+  AuctionContractTestnet: '0xbBF2fB4301FD8F91372C8A618dFfDB2D08d7bB78',
   loading: false,
   contracts: {},
   toEth: (n) => {
@@ -29,7 +30,7 @@ ReadAuction = {
     }
     else if(chainId == 80001) {
       StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
-      auctionAddress = '0xE2e9037cE2524A752DF4b8538b713425116855A7'
+      auctionAddress = ReadAuction.AuctionContractTestnet
     }
     else {
       StacksAuctionHouse = await $.getJSON('abis/StacksAuctionHouse.json')
